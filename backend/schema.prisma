@@ -22,19 +22,20 @@ model User {
 }
 
 model Product {
-  id           String  @id @default(cuid())
-  name         String  @default("")
-  slug         String  @unique @default("")
-  category     String  @default("")
-  price        Float
-  brand        String  @default("")
-  rating       Float?  @default(0)
-  numReviews   Float?  @default(0)
-  countInStock Float
-  description  String  @default("")
-  user         User?   @relation("Product_user", fields: [userId], references: [id])
-  userId       String? @map("user")
-  productImg   Image[] @relation("Product_productImg")
+  id                         String   @id @default(cuid())
+  name                       String   @default("")
+  slug                       String   @unique @default("")
+  category                   String   @default("")
+  price                      Float
+  brand                      String   @default("")
+  rating                     Float?   @default(0)
+  numReviews                 Float?   @default(0)
+  countInStock               Float
+  description                String   @default("")
+  user                       User?    @relation("Product_user", fields: [userId], references: [id])
+  userId                     String?  @map("user")
+  productImg                 Image[]  @relation("Product_productImg")
+  from_Parcel_orderedProduct Parcel[] @relation("Parcel_orderedProduct")
 
   @@index([userId])
 }
@@ -49,6 +50,20 @@ model Image {
   image_height            Int?
   image_id                String?
   from_Product_productImg Product[] @relation("Product_productImg")
+}
+
+model Parcel {
+  id             String    @id @default(cuid())
+  name           String    @default("")
+  address        String    @default("")
+  phoneNumber    String    @default("")
+  sellPrice      Float
+  resellerPrice  Float
+  deliveryCharge Float
+  shippingMethod String    @default("")
+  quantity       Float
+  status         String?   @default("pending")
+  orderedProduct Product[] @relation("Parcel_orderedProduct")
 }
 
 model Post {

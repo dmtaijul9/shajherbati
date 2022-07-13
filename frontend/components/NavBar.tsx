@@ -26,7 +26,7 @@ const NavBar = () => {
     <div className="shadow-sm bg-amber-300">
       <nav className="container flex items-center justify-between h-16 px-4 m-auto">
         <Link href="/">
-          <a className="text-lg font-bold">amazona</a>
+          <a className="text-lg font-bold">Shajher Bati</a>
         </Link>
         <div>
           <Link href="/cart">

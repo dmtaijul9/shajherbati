@@ -358,6 +358,119 @@ input ImageCreateInput {
   image: ImageFieldInput
 }
 
+type Parcel {
+  id: ID!
+  name: String
+  address: String
+  phoneNumber: String
+  sellPrice: Float
+  resellerPrice: Float
+  deliveryCharge: Float
+  shippingMethod: String
+  quantity: Float
+  status: String
+  orderedProduct(
+    where: ProductWhereInput! = {}
+    orderBy: [ProductOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Product!]
+  orderedProductCount(where: ProductWhereInput! = {}): Int
+}
+
+input ParcelWhereUniqueInput {
+  id: ID
+}
+
+input ParcelWhereInput {
+  AND: [ParcelWhereInput!]
+  OR: [ParcelWhereInput!]
+  NOT: [ParcelWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  address: StringFilter
+  phoneNumber: StringFilter
+  sellPrice: FloatFilter
+  resellerPrice: FloatFilter
+  deliveryCharge: FloatFilter
+  shippingMethod: StringFilter
+  quantity: FloatFilter
+  status: StringNullableFilter
+  orderedProduct: ProductManyRelationFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
+}
+
+input NestedStringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
+}
+
+input ParcelOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  address: OrderDirection
+  phoneNumber: OrderDirection
+  sellPrice: OrderDirection
+  resellerPrice: OrderDirection
+  deliveryCharge: OrderDirection
+  shippingMethod: OrderDirection
+  quantity: OrderDirection
+  status: OrderDirection
+}
+
+input ParcelUpdateInput {
+  name: String
+  address: String
+  phoneNumber: String
+  sellPrice: Float
+  resellerPrice: Float
+  deliveryCharge: Float
+  shippingMethod: String
+  quantity: Float
+  status: String
+  orderedProduct: ProductRelateToManyForUpdateInput
+}
+
+input ParcelUpdateArgs {
+  where: ParcelWhereUniqueInput!
+  data: ParcelUpdateInput!
+}
+
+input ParcelCreateInput {
+  name: String
+  address: String
+  phoneNumber: String
+  sellPrice: Float
+  resellerPrice: Float
+  deliveryCharge: Float
+  shippingMethod: String
+  quantity: Float
+  status: String
+  orderedProduct: ProductRelateToManyForCreateInput
+}
+
 type Post {
   id: ID!
   title: String
@@ -395,34 +508,6 @@ input PostWhereInput {
   publishDate: DateTimeNullableFilter
   author: UserWhereInput
   tags: TagManyRelationFilter
-}
-
-input StringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: NestedStringNullableFilter
-}
-
-input NestedStringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: NestedStringNullableFilter
 }
 
 input DateTimeNullableFilter {
@@ -559,6 +644,12 @@ type Mutation {
   updateImages(data: [ImageUpdateArgs!]!): [Image]
   deleteImage(where: ImageWhereUniqueInput!): Image
   deleteImages(where: [ImageWhereUniqueInput!]!): [Image]
+  createParcel(data: ParcelCreateInput!): Parcel
+  createParcels(data: [ParcelCreateInput!]!): [Parcel]
+  updateParcel(where: ParcelWhereUniqueInput!, data: ParcelUpdateInput!): Parcel
+  updateParcels(data: [ParcelUpdateArgs!]!): [Parcel]
+  deleteParcel(where: ParcelWhereUniqueInput!): Parcel
+  deleteParcels(where: [ParcelWhereUniqueInput!]!): [Parcel]
   createPost(data: PostCreateInput!): Post
   createPosts(data: [PostCreateInput!]!): [Post]
   updatePost(where: PostWhereUniqueInput!, data: PostUpdateInput!): Post
@@ -625,6 +716,14 @@ type Query {
   ): [Image!]
   image(where: ImageWhereUniqueInput!): Image
   imagesCount(where: ImageWhereInput! = {}): Int
+  parcels(
+    where: ParcelWhereInput! = {}
+    orderBy: [ParcelOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Parcel!]
+  parcel(where: ParcelWhereUniqueInput!): Parcel
+  parcelsCount(where: ParcelWhereInput! = {}): Int
   posts(
     where: PostWhereInput! = {}
     orderBy: [PostOrderByInput!]! = []

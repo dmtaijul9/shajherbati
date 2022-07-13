@@ -4,8 +4,8 @@ const CheckoutWizard = ({ activeStep = 0 }) => {
   const steps = [
     "User Login",
     "Shipping Address",
-    "Payment Method",
-    "Place Order",
+    "Shipping Method",
+    "Create Percel",
   ];
   return (
     <div className="flex flex-wrap mt-3 mb-5">
