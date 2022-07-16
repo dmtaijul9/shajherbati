@@ -28,7 +28,7 @@ export const product = list({
   // Here we can configure the Admin UI. We want to show a user's name and posts in the Admin UI
   ui: {
     listView: {
-      initialColumns: ["name", "products"],
+      initialColumns: [],
     },
   },
 });

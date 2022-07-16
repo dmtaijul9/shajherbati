@@ -52,7 +52,10 @@ const NavBar = () => {
                   </DropdownLink>
                 </Menu.Item>
                 <Menu.Item>
-                  <DropdownLink className="dropdown-link" href="/order-history">
+                  <DropdownLink
+                    className="dropdown-link"
+                    href="dashboard/order-history"
+                  >
                     Order History
                   </DropdownLink>
                 </Menu.Item>

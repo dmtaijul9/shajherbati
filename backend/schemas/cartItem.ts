@@ -12,8 +12,8 @@ export const CartItem = list({
         isRequired: true,
       },
     }),
-    product: relationship({ ref: "Product", many: true }),
-    user: relationship({ ref: "User.cart" }),
+    product: relationship({ ref: "Product" }),
+    user: relationship({ ref: "User.cartItem" }),
   },
   ui: {
     listView: {

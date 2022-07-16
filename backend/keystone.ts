@@ -13,6 +13,7 @@ import { lists } from "./schema";
 
 // Keystone auth is configured separately - check out the basic auth setup we are importing from our auth file.
 import { withAuth, session } from "./auth";
+import { extendGraphQlSchema } from "./mutations";
 
 export default withAuth(
   // Using the config function helps typescript guide you to the available options.
@@ -46,5 +47,6 @@ export default withAuth(
         origin: ["http://localhost:7777"],
       },
     },
+    extendGraphqlSchema: extendGraphQlSchema,
   })
 );

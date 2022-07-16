@@ -13,29 +13,30 @@ generator client {
 }
 
 model User {
-  id       String    @id @default(cuid())
-  name     String    @default("")
-  email    String    @unique @default("")
+  id       String     @id @default(cuid())
+  name     String     @default("")
+  email    String     @unique @default("")
   password String
-  posts    Post[]    @relation("Post_author")
-  products Product[] @relation("Product_user")
+  products Product[]  @relation("Product_user")
+  parcel   Parcel[]   @relation("Parcel_user")
+  cartItem CartItem[] @relation("CartItem_user")
 }
 
 model Product {
-  id                         String   @id @default(cuid())
-  name                       String   @default("")
-  slug                       String   @unique @default("")
-  category                   String   @default("")
-  price                      Float
-  brand                      String   @default("")
-  rating                     Float?   @default(0)
-  numReviews                 Float?   @default(0)
-  countInStock               Float
-  description                String   @default("")
-  user                       User?    @relation("Product_user", fields: [userId], references: [id])
-  userId                     String?  @map("user")
-  productImg                 Image[]  @relation("Product_productImg")
-  from_Parcel_orderedProduct Parcel[] @relation("Parcel_orderedProduct")
+  id                    String     @id @default(cuid())
+  name                  String     @default("")
+  slug                  String     @unique @default("")
+  category              String     @default("")
+  price                 Float
+  brand                 String     @default("")
+  rating                Float?     @default(0)
+  numReviews            Float?     @default(0)
+  countInStock          Float
+  description           String     @default("")
+  user                  User?      @relation("Product_user", fields: [userId], references: [id])
+  userId                String?    @map("user")
+  productImg            Image[]    @relation("Product_productImg")
+  from_CartItem_product CartItem[] @relation("CartItem_product")
 
   @@index([userId])
 }
@@ -53,34 +54,41 @@ model Image {
 }
 
 model Parcel {
-  id             String    @id @default(cuid())
-  name           String    @default("")
-  address        String    @default("")
-  phoneNumber    String    @default("")
+  id             String       @id @default(cuid())
+  name           String       @default("")
+  address        String       @default("")
+  phoneNumber    String       @default("")
   sellPrice      Float
-  resellerPrice  Float
   deliveryCharge Float
-  shippingMethod String    @default("")
-  quantity       Float
-  status         String?   @default("pending")
-  orderedProduct Product[] @relation("Parcel_orderedProduct")
+  shippingMethod String?      @default("CashOnDelivery")
+  status         String?      @default("pending")
+  user           User?        @relation("Parcel_user", fields: [userId], references: [id])
+  userId         String?      @map("user")
+  items          ParcelItem[] @relation("ParcelItem_parcel")
+
+  @@index([userId])
 }
 
-model Post {
-  id          String    @id @default(cuid())
-  title       String    @default("")
-  status      String?   @default("draft")
-  content     String    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  publishDate DateTime?
-  author      User?     @relation("Post_author", fields: [authorId], references: [id])
-  authorId    String?   @map("author")
-  tags        Tag[]     @relation("Post_tags")
+model CartItem {
+  id        String   @id @default(cuid())
+  quantity  Int      @default(1)
+  product   Product? @relation("CartItem_product", fields: [productId], references: [id])
+  productId String?  @map("product")
+  user      User?    @relation("CartItem_user", fields: [userId], references: [id])
+  userId    String?  @map("user")
 
-  @@index([authorId])
+  @@index([productId])
+  @@index([userId])
 }
 
-model Tag {
-  id    String @id @default(cuid())
-  name  String @default("")
-  posts Post[] @relation("Post_tags")
+model ParcelItem {
+  id       String  @id @default(cuid())
+  name     String  @default("")
+  imageUrl String  @default("")
+  price    Float
+  quantity Float
+  parcel   Parcel? @relation("ParcelItem_parcel", fields: [parcelId], references: [id])
+  parcelId String? @map("parcel")
+
+  @@index([parcelId])
 }
