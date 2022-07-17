@@ -60,6 +60,7 @@ model Parcel {
   phoneNumber    String       @default("")
   sellPrice      Float
   deliveryCharge Float
+  createdAt      DateTime?    @default(now())
   shippingMethod String?      @default("CashOnDelivery")
   status         String?      @default("pending")
   user           User?        @relation("Parcel_user", fields: [userId], references: [id])

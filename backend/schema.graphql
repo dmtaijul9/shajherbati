@@ -393,6 +393,7 @@ type Parcel {
   phoneNumber: String
   sellPrice: Float
   deliveryCharge: Float
+  createdAt: DateTime
   shippingMethod: String
   status: String
   user: User
@@ -404,6 +405,9 @@ type Parcel {
   ): [ParcelItem!]
   itemsCount(where: ParcelItemWhereInput! = {}): Int
 }
+
+scalar DateTime
+  @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 input ParcelWhereUniqueInput {
   id: ID
@@ -419,10 +423,22 @@ input ParcelWhereInput {
   phoneNumber: StringFilter
   sellPrice: FloatFilter
   deliveryCharge: FloatFilter
+  createdAt: DateTimeNullableFilter
   shippingMethod: StringNullableFilter
   status: StringNullableFilter
   user: UserWhereInput
   items: ParcelItemManyRelationFilter
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeNullableFilter
 }
 
 input StringNullableFilter {
@@ -466,6 +482,7 @@ input ParcelOrderByInput {
   phoneNumber: OrderDirection
   sellPrice: OrderDirection
   deliveryCharge: OrderDirection
+  createdAt: OrderDirection
   shippingMethod: OrderDirection
   status: OrderDirection
 }
@@ -476,6 +493,7 @@ input ParcelUpdateInput {
   phoneNumber: String
   sellPrice: Float
   deliveryCharge: Float
+  createdAt: DateTime
   shippingMethod: String
   status: String
   user: UserRelateToOneForUpdateInput
@@ -500,6 +518,7 @@ input ParcelCreateInput {
   phoneNumber: String
   sellPrice: Float
   deliveryCharge: Float
+  createdAt: DateTime
   shippingMethod: String
   status: String
   user: UserRelateToOneForCreateInput

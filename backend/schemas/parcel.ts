@@ -1,5 +1,11 @@
 import { list } from "@keystone-6/core";
-import { float, relationship, select, text } from "@keystone-6/core/fields";
+import {
+  float,
+  relationship,
+  select,
+  text,
+  timestamp,
+} from "@keystone-6/core/fields";
 
 export const parcel = list({
   // Here are the fields that `User` will have. We want an email and password so they can log in
@@ -10,6 +16,11 @@ export const parcel = list({
     phoneNumber: text({ validation: { isRequired: true } }),
     sellPrice: float({ validation: { isRequired: true } }),
     deliveryCharge: float({ validation: { isRequired: true } }),
+    createdAt: timestamp({
+      defaultValue: {
+        kind: "now",
+      },
+    }),
     shippingMethod: select({
       options: [
         { label: "Sundarban", value: "Sundarban" },

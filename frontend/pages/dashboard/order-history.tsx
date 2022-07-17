@@ -13,8 +13,6 @@ const orderHistoryScreen = () => {
     variables: { userId: user?.id },
   });
 
-  console.log(data);
-
   return (
     <Layout title="order history">
       <section>
@@ -43,6 +41,9 @@ const orderHistoryScreen = () => {
                     {item.items
                       .map((parcelItem) => parcelItem.quantity)
                       .reduce((total, quantity) => (total += quantity))}{" "}
+                  </td>
+                  <td className="p-5 text-right">
+                    {item.sellPrice + item.deliveryCharge} TK
                   </td>
                 </tr>
               ))}
