@@ -1,5 +1,6 @@
 import { graphQLSchemaExtension } from "@keystone-6/core";
 import addToParcelList from "./addToParcelList";
+import changeParcelStatus from "./changeParcelStatus";
 
 const graphql = String.raw;
 
@@ -21,11 +22,14 @@ export const extendGraphQlSchema = graphQLSchemaExtension({
         shippingMethod: String!
         parcelItems: [ProductInputForParcel!]
       ): Parcel
+
+      changeParcelStatus(status: String!, parcelId: String!): Parcel
     }
   `,
   resolvers: {
     Mutation: {
       addToParcelList,
+      changeParcelStatus,
     },
   },
 });

@@ -20,6 +20,7 @@ model User {
   products Product[]  @relation("Product_user")
   parcel   Parcel[]   @relation("Parcel_user")
   cartItem CartItem[] @relation("CartItem_user")
+  userType String?    @default("reseller")
 }
 
 model Product {

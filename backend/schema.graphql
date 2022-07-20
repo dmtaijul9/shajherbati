@@ -27,6 +27,7 @@ type User {
     skip: Int! = 0
   ): [CartItem!]
   cartItemCount(where: CartItemWhereInput! = {}): Int
+  userType: String
 }
 
 type PasswordState {
@@ -48,6 +49,7 @@ input UserWhereInput {
   products: ProductManyRelationFilter
   parcel: ParcelManyRelationFilter
   cartItem: CartItemManyRelationFilter
+  userType: StringNullableFilter
 }
 
 input IDFilter {
@@ -107,10 +109,39 @@ input CartItemManyRelationFilter {
   none: CartItemWhereInput
 }
 
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
+}
+
+input NestedStringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
+}
+
 input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
   email: OrderDirection
+  userType: OrderDirection
 }
 
 enum OrderDirection {
@@ -125,6 +156,7 @@ input UserUpdateInput {
   products: ProductRelateToManyForUpdateInput
   parcel: ParcelRelateToManyForUpdateInput
   cartItem: CartItemRelateToManyForUpdateInput
+  userType: String
 }
 
 input ProductRelateToManyForUpdateInput {
@@ -160,6 +192,7 @@ input UserCreateInput {
   products: ProductRelateToManyForCreateInput
   parcel: ParcelRelateToManyForCreateInput
   cartItem: CartItemRelateToManyForCreateInput
+  userType: String
 }
 
 input ProductRelateToManyForCreateInput {
@@ -441,34 +474,6 @@ input DateTimeNullableFilter {
   not: DateTimeNullableFilter
 }
 
-input StringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: NestedStringNullableFilter
-}
-
-input NestedStringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: NestedStringNullableFilter
-}
-
 input ParcelItemManyRelationFilter {
   every: ParcelItemWhereInput
   some: ParcelItemWhereInput
@@ -731,6 +736,7 @@ type Mutation {
     shippingMethod: String!
     parcelItems: [ProductInputForParcel!]
   ): Parcel
+  changeParcelStatus(status: String!, parcelId: String!): Parcel
 }
 
 union UserAuthenticationWithPasswordResult =

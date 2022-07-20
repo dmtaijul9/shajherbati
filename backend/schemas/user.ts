@@ -1,5 +1,5 @@
 import { list } from "@keystone-6/core";
-import { password, relationship, text } from "@keystone-6/core/fields";
+import { password, relationship, select, text } from "@keystone-6/core/fields";
 
 export const user = list({
   // Here are the fields that `User` will have. We want an email and password so they can log in
@@ -20,6 +20,13 @@ export const user = list({
     products: relationship({ ref: "Product.user", many: true }),
     parcel: relationship({ ref: "Parcel.user", many: true }),
     cartItem: relationship({ ref: "CartItem.user", many: true }),
+    userType: select({
+      options: [
+        { label: "Admin", value: "admin" },
+        { label: "Reseller", value: "reseller" },
+      ],
+      defaultValue: "reseller",
+    }),
   },
 
   // Here we can configure the Admin UI. We want to show a user's name and posts in the Admin UI

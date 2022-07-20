@@ -27,3 +27,15 @@ export const CREATE_PARCEL_MUTATION = gql`
     }
   }
 `;
+
+export const CHANGE_PARCEL_STATUS_MUTATION = gql`
+  mutation CHANGE_PARCEL_STATUS_MUTATION($parcelId: String!, $status: String!) {
+    changeParcelStatus(parcelId: $parcelId, status: $status) {
+      id
+
+      user {
+        name
+      }
+    }
+  }
+`;
