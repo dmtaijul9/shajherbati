@@ -98,7 +98,7 @@ const singleParcelViewScreen = () => {
               <div>Delivery Charge</div>
               <div> {data?.parcel.deliveryCharge} TK</div>
             </div>
-            <div className="flex justify-between mb-2">
+            <div className="flex justify-between mb-2 ">
               <div> Reseller Profit ( if delivered )</div>
               <div
                 className={
@@ -113,7 +113,6 @@ const singleParcelViewScreen = () => {
                 TK
               </div>
             </div>
-            <button className="w-full primary-button">Create Parcel</button>
           </div>
         </div>
         <div className="col-span-2">

@@ -49,7 +49,7 @@ const cart = () => {
                   <tr key={index} className="border-b">
                     <td>
                       {" "}
-                      <Link href={`/product/${item.slug}`}>
+                      <Link href={`/product/${item.id}`}>
                         <a className="flex items-center">
                           {" "}
                           <Image

@@ -6,7 +6,7 @@ import React from "react";
 const ProductItem = ({ product }: any) => {
   return (
     <div className="card">
-      <Link href={`/product/${product.slug}`}>
+      <Link href={`/product/${product.id}`}>
         <a>
           <Image
             src={product?.productImg[0].image.url}
@@ -17,7 +17,7 @@ const ProductItem = ({ product }: any) => {
         </a>
       </Link>
       <div className="flex flex-col items-center justify-center p-5">
-        <Link href={`/product/${product.slug}`}>
+        <Link href={`/product/${product.id}`}>
           <a>
             <h2>{product?.name}</h2>
           </a>

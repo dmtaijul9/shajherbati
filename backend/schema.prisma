@@ -13,14 +13,18 @@ generator client {
 }
 
 model User {
-  id       String     @id @default(cuid())
-  name     String     @default("")
-  email    String     @unique @default("")
-  password String
-  products Product[]  @relation("Product_user")
-  parcel   Parcel[]   @relation("Parcel_user")
-  cartItem CartItem[] @relation("CartItem_user")
-  userType String?    @default("reseller")
+  id         String     @id @default(cuid())
+  name       String     @default("")
+  email      String     @unique @default("")
+  password   String
+  products   Product[]  @relation("Product_user")
+  parcel     Parcel[]   @relation("Parcel_user")
+  cartItem   CartItem[] @relation("CartItem_user")
+  userType   String?    @default("reseller")
+  bkash      String     @default("")
+  fbPageName String     @default("")
+  address    String     @default("")
+  paymentDue Float?     @default(0)
 }
 
 model Product {

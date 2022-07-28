@@ -8,6 +8,7 @@ import Layout from "../components/Layout";
 import { useForm } from "../lib/hooks/useForm";
 import useUser from "../lib/hooks/useUser";
 import { SIGNIN_MUTATION } from "../resolvers/user/mutation";
+import { ME } from "../resolvers/user/query";
 
 const login = () => {
   const user = useUser();
@@ -28,14 +29,17 @@ const login = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const result = await signin({ variables: inputs });
+    const result = await signin({
+      variables: inputs,
+      refetchQueries: [{ query: ME }],
+    });
 
     if (result?.data.authenticateUserWithPassword.message) {
       toast.error(result.data.authenticateUserWithPassword.message);
       return;
     }
     toast.success("Login Success");
-    router.push("redirect=/");
+    router.push("/");
   };
 
   return (

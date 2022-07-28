@@ -15,13 +15,13 @@ export const reducer = (state, action) => {
       console.log(newItem);
 
       const existItem = state.cart.cartItems.find(
-        (item: any) => item.slug === newItem.slug
+        (item: any) => item.id === newItem.id
       );
       console.log(existItem);
 
       const cartItems = existItem
         ? state.cart.cartItems.map((item: any) =>
-            item.slug === existItem.slug ? newItem : item
+            item.id === existItem.id ? newItem : item
           )
         : [...state.cart.cartItems, newItem];
 
@@ -30,7 +30,7 @@ export const reducer = (state, action) => {
       return { ...state, cart: { ...state.cart, cartItems } };
     case "REMOVE_CART_ITEM":
       const newCartItem = state?.cart.cartItems.filter(
-        (item: any) => item.slug !== action.payload.slug
+        (item: any) => item.id !== action.payload.id
       );
       Cookies.set(
         "cart",

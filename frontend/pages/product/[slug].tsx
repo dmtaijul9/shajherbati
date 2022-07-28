@@ -24,7 +24,8 @@ export async function getServerSideProps(context: any) {
     data: {
       query: `
         query {
-          product (where: {slug: "${slug}"}) {
+          product (where: {id: "${slug}"}) {
+            id
             name
             category
             slug
@@ -58,7 +59,7 @@ const productScreen = ({ product }: any) => {
   const { state, dispatch } = useContext(Store);
   const addToCartHandler = () => {
     const existItem = state.cart.cartItems.find(
-      (item) => item.slug === product.slug
+      (item: any) => item.id === product.id
     );
     const quantity = existItem ? existItem.quantity + 1 : 1;
 

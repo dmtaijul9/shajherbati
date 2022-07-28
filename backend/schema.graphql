@@ -28,6 +28,10 @@ type User {
   ): [CartItem!]
   cartItemCount(where: CartItemWhereInput! = {}): Int
   userType: String
+  bkash: String
+  fbPageName: String
+  address: String
+  paymentDue: Float
 }
 
 type PasswordState {
@@ -50,6 +54,10 @@ input UserWhereInput {
   parcel: ParcelManyRelationFilter
   cartItem: CartItemManyRelationFilter
   userType: StringNullableFilter
+  bkash: StringFilter
+  fbPageName: StringFilter
+  address: StringFilter
+  paymentDue: FloatNullableFilter
 }
 
 input IDFilter {
@@ -137,11 +145,26 @@ input NestedStringNullableFilter {
   not: NestedStringNullableFilter
 }
 
+input FloatNullableFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatNullableFilter
+}
+
 input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
   email: OrderDirection
   userType: OrderDirection
+  bkash: OrderDirection
+  fbPageName: OrderDirection
+  address: OrderDirection
+  paymentDue: OrderDirection
 }
 
 enum OrderDirection {
@@ -157,6 +180,10 @@ input UserUpdateInput {
   parcel: ParcelRelateToManyForUpdateInput
   cartItem: CartItemRelateToManyForUpdateInput
   userType: String
+  bkash: String
+  fbPageName: String
+  address: String
+  paymentDue: Float
 }
 
 input ProductRelateToManyForUpdateInput {
@@ -193,6 +220,10 @@ input UserCreateInput {
   parcel: ParcelRelateToManyForCreateInput
   cartItem: CartItemRelateToManyForCreateInput
   userType: String
+  bkash: String
+  fbPageName: String
+  address: String
+  paymentDue: Float
 }
 
 input ProductRelateToManyForCreateInput {
@@ -263,17 +294,6 @@ input FloatFilter {
   gt: Float
   gte: Float
   not: FloatFilter
-}
-
-input FloatNullableFilter {
-  equals: Float
-  in: [Float!]
-  notIn: [Float!]
-  lt: Float
-  lte: Float
-  gt: Float
-  gte: Float
-  not: FloatNullableFilter
 }
 
 input ImageManyRelationFilter {

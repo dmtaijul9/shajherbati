@@ -1,5 +1,11 @@
 import { list } from "@keystone-6/core";
-import { password, relationship, select, text } from "@keystone-6/core/fields";
+import {
+  float,
+  password,
+  relationship,
+  select,
+  text,
+} from "@keystone-6/core/fields";
 
 export const user = list({
   // Here are the fields that `User` will have. We want an email and password so they can log in
@@ -27,6 +33,10 @@ export const user = list({
       ],
       defaultValue: "reseller",
     }),
+    bkash: text({ validation: { isRequired: true } }),
+    fbPageName: text({ validation: { isRequired: true } }),
+    address: text({ validation: { isRequired: true } }),
+    paymentDue: float({ defaultValue: 0 }),
   },
 
   // Here we can configure the Admin UI. We want to show a user's name and posts in the Admin UI
