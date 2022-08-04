@@ -1,9 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { useMutation } from "@apollo/client";
 import React from "react";
 import Layout from "../../components/Layout";
 import { useForm } from "../../lib/hooks/useForm";
+import useUser from "../../lib/hooks/useUser";
+import { UPDATE_USER } from "../../resolvers/user/mutation";
+import { ME } from "../../resolvers/user/query";
 
 const profile = () => {
+  const user = useUser();
   const { clearForm, handleChange, inputs, resetForm } = useForm({
     name: "",
     email: "",
@@ -12,8 +17,9 @@ const profile = () => {
     password: "",
     address: "",
   });
+  const [updateUser] = useMutation(UPDATE_USER);
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     const variables = {};
@@ -36,6 +42,14 @@ const profile = () => {
     if (inputs.password !== "") {
       variables.password = inputs.password;
     }
+
+    variables.id = user?.id;
+
+    console.log(variables);
+    const updatedUser = await updateUser({
+      variables,
+      refetchQueries: [{ query: ME }],
+    });
   };
   return (
     <Layout title="signup">
