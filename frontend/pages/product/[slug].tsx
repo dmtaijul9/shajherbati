@@ -28,18 +28,14 @@ export async function getServerSideProps(context: any) {
             id
             name
             category
-            slug
             price
             brand
-            rating
-            numReviews
             description
             countInStock
             productImg {
               image {
                 url
               }
-              name
             }
           }
         }
@@ -55,6 +51,8 @@ export async function getServerSideProps(context: any) {
 }
 
 const productScreen = ({ product }: any) => {
+  console.log(product);
+
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const addToCartHandler = () => {

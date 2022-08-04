@@ -89,15 +89,27 @@ const NavBar = () => {
                     Profile
                   </DropdownLink>
                 </Menu.Item>
+                {user?.userType === "admin" && (
+                  <Menu.Item>
+                    <DropdownLink
+                      className="dropdown-link"
+                      href="/dashboard/ordered-parcel"
+                    >
+                      Ordered Parcel
+                    </DropdownLink>
+                  </Menu.Item>
+                )}
 
-                <Menu.Item>
-                  <DropdownLink
-                    className="dropdown-link"
-                    href="/dashboard/order-history"
-                  >
-                    Order History
-                  </DropdownLink>
-                </Menu.Item>
+                {user?.userType !== "admin" && (
+                  <Menu.Item>
+                    <DropdownLink
+                      className="dropdown-link"
+                      href="/dashboard/order-history"
+                    >
+                      Order History
+                    </DropdownLink>
+                  </Menu.Item>
+                )}
                 <Menu.Item>
                   <DropdownLink
                     className="dropdown-link"

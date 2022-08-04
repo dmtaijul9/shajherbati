@@ -14,3 +14,20 @@ export const USER_WITHDRAW_REQ = gql`
     }
   }
 `;
+
+export const USER_WITHDRAW_REQ_SIGNLE = gql`
+  query USER_WITHDRAW_REQ_SIGNLE($id: ID!) {
+    withdraw(where: { id: $id }) {
+      amount
+      bkashNumber
+      status
+      id
+      time
+      transationID
+      user {
+        name
+        email
+      }
+    }
+  }
+`;

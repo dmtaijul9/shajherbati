@@ -48,6 +48,9 @@ const orderedParcelScreen = () => {
             </div>
           </div>
         </div>
+        <div className="pb-4 mb-5 text-2xl font-bold text-center border-b-2 border-amber-400">
+          <h1>Withdraw History</h1>
+        </div>
         <div>
           <table className="min-w-full">
             <thead className="border-b">

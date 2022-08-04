@@ -30,7 +30,9 @@ const orderHistoryScreen = () => {
   return (
     <Layout title="order history">
       <section>
-        <div>Order History</div>
+        <div className="pb-4 mb-5 text-2xl font-bold text-center border-b-2 border-amber-400">
+          <h1>Order History</h1>
+        </div>
         <div>
           {" "}
           <table className="min-w-full">

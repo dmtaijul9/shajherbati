@@ -36,7 +36,7 @@ const withdrawHistory = () => {
                   <td className="p-5 text-center">{item.status}</td>
                   <td className="p-5 text-center">{item.amount}</td>
                   <td className="p-5 text-right">
-                    <a href={`/dashboard/withdraw/${item.id}}`}>View Details</a>
+                    <a href={`/dashboard/withdraw/${item.id}`}>View Details</a>
                   </td>
                 </tr>
               ))}
