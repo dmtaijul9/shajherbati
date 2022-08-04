@@ -13,8 +13,6 @@ export default async function changeParcelStatus(
   const { status, parcelId } = await args;
   const sesh = context.session;
 
-  console.log(args);
-
   if (!sesh.itemId) {
     throw new Error("You Must be logged in to do this!");
   }

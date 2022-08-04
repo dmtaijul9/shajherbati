@@ -46,8 +46,8 @@ const NavBar = () => {
           <Link href="/womens-fashion">
             <a className="p-2">Women's Fashion</a>
           </Link>
-          <Link href="/punjabi">
-            <a className="p-2">Punjabi</a>
+          <Link href="/panjabi">
+            <a className="p-2">Panjabi</a>
           </Link>
           <Link href="/t-shirt ">
             <a className="p-2">T-shirt</a>
@@ -69,7 +69,18 @@ const NavBar = () => {
               <Menu.Button className="font-semibold border-b-2 border-black">
                 <UserCircleIcon className="inline-block w-5 h-5" /> {user.name}{" "}
               </Menu.Button>
+
               <Menu.Items className="absolute right-0 z-10 w-56 origin-top-right bg-white shadow-lg">
+                {user?.userType === "admin" && (
+                  <Menu.Item>
+                    <DropdownLink
+                      className="dropdown-link"
+                      href="/dashboard/create-product"
+                    >
+                      Create Product
+                    </DropdownLink>
+                  </Menu.Item>
+                )}
                 <Menu.Item>
                   <DropdownLink
                     className="dropdown-link"
@@ -78,12 +89,29 @@ const NavBar = () => {
                     Profile
                   </DropdownLink>
                 </Menu.Item>
+
                 <Menu.Item>
                   <DropdownLink
                     className="dropdown-link"
-                    href="dashboard/order-history"
+                    href="/dashboard/order-history"
                   >
                     Order History
+                  </DropdownLink>
+                </Menu.Item>
+                <Menu.Item>
+                  <DropdownLink
+                    className="dropdown-link"
+                    href="/dashboard/payment"
+                  >
+                    Payment
+                  </DropdownLink>
+                </Menu.Item>
+                <Menu.Item>
+                  <DropdownLink
+                    className="dropdown-link"
+                    href="/dashboard/withdraw-history"
+                  >
+                    Withdraw History
                   </DropdownLink>
                 </Menu.Item>
                 <Menu.Item>
@@ -98,9 +126,14 @@ const NavBar = () => {
               </Menu.Items>
             </Menu>
           ) : (
-            <Link href="/login">
-              <a className="p-2">Login</a>
-            </Link>
+            <>
+              <Link href="/login">
+                <a className="p-2">Login</a>
+              </Link>
+              <Link href="/signup">
+                <a className="p-2">Sign Up</a>
+              </Link>
+            </>
           )}
         </div>
       </nav>

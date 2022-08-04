@@ -33,10 +33,11 @@ export const user = list({
       ],
       defaultValue: "reseller",
     }),
-    bkash: text({ validation: { isRequired: true } }),
-    fbPageName: text({ validation: { isRequired: true } }),
-    address: text({ validation: { isRequired: true } }),
+    bkash: text(),
+    fbPageName: text(),
+    address: text(),
     paymentDue: float({ defaultValue: 0 }),
+    withdrawn: relationship({ ref: "Withdraw.user", many: true }),
   },
 
   // Here we can configure the Admin UI. We want to show a user's name and posts in the Admin UI

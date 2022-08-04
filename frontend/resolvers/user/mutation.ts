@@ -5,8 +5,20 @@ export const SIGNUP_MUTATION = gql`
     $email: String!
     $name: String!
     $password: String!
+    $bkash: String!
+    $fbPageName: String!
+    $address: String!
   ) {
-    createUser(data: { email: $email, name: $name, password: $password }) {
+    createUser(
+      data: {
+        email: $email
+        name: $name
+        password: $password
+        address: $address
+        fbPageName: $fbPageName
+        bkash: $bkash
+      }
+    ) {
       id
       email
       name

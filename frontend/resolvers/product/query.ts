@@ -10,9 +10,7 @@ export const QUERY_PRODUCT_WOMENS_FASHION = gql`
       id
       name
       category
-      slug
       productImg {
-        altText
         image {
           url
         }
@@ -29,9 +27,7 @@ export const QUERY_PRODUCT_PANJABI = gql`
       id
       name
       category
-      slug
       productImg {
-        altText
         image {
           url
         }

@@ -32,6 +32,13 @@ type User {
   fbPageName: String
   address: String
   paymentDue: Float
+  withdrawn(
+    where: WithdrawWhereInput! = {}
+    orderBy: [WithdrawOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Withdraw!]
+  withdrawnCount(where: WithdrawWhereInput! = {}): Int
 }
 
 type PasswordState {
@@ -58,6 +65,7 @@ input UserWhereInput {
   fbPageName: StringFilter
   address: StringFilter
   paymentDue: FloatNullableFilter
+  withdrawn: WithdrawManyRelationFilter
 }
 
 input IDFilter {
@@ -156,6 +164,12 @@ input FloatNullableFilter {
   not: FloatNullableFilter
 }
 
+input WithdrawManyRelationFilter {
+  every: WithdrawWhereInput
+  some: WithdrawWhereInput
+  none: WithdrawWhereInput
+}
+
 input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
@@ -184,6 +198,7 @@ input UserUpdateInput {
   fbPageName: String
   address: String
   paymentDue: Float
+  withdrawn: WithdrawRelateToManyForUpdateInput
 }
 
 input ProductRelateToManyForUpdateInput {
@@ -207,6 +222,13 @@ input CartItemRelateToManyForUpdateInput {
   connect: [CartItemWhereUniqueInput!]
 }
 
+input WithdrawRelateToManyForUpdateInput {
+  disconnect: [WithdrawWhereUniqueInput!]
+  set: [WithdrawWhereUniqueInput!]
+  create: [WithdrawCreateInput!]
+  connect: [WithdrawWhereUniqueInput!]
+}
+
 input UserUpdateArgs {
   where: UserWhereUniqueInput!
   data: UserUpdateInput!
@@ -224,6 +246,7 @@ input UserCreateInput {
   fbPageName: String
   address: String
   paymentDue: Float
+  withdrawn: WithdrawRelateToManyForCreateInput
 }
 
 input ProductRelateToManyForCreateInput {
@@ -241,15 +264,17 @@ input CartItemRelateToManyForCreateInput {
   connect: [CartItemWhereUniqueInput!]
 }
 
+input WithdrawRelateToManyForCreateInput {
+  create: [WithdrawCreateInput!]
+  connect: [WithdrawWhereUniqueInput!]
+}
+
 type Product {
   id: ID!
   name: String
-  slug: String
   category: String
   price: Float
   brand: String
-  rating: Float
-  numReviews: Float
   countInStock: Float
   description: String
   user: User
@@ -264,7 +289,6 @@ type Product {
 
 input ProductWhereUniqueInput {
   id: ID
-  slug: String
 }
 
 input ProductWhereInput {
@@ -273,12 +297,9 @@ input ProductWhereInput {
   NOT: [ProductWhereInput!]
   id: IDFilter
   name: StringFilter
-  slug: StringFilter
-  category: StringFilter
+  category: StringNullableFilter
   price: FloatFilter
   brand: StringFilter
-  rating: FloatNullableFilter
-  numReviews: FloatNullableFilter
   countInStock: FloatFilter
   description: StringFilter
   user: UserWhereInput
@@ -305,24 +326,18 @@ input ImageManyRelationFilter {
 input ProductOrderByInput {
   id: OrderDirection
   name: OrderDirection
-  slug: OrderDirection
   category: OrderDirection
   price: OrderDirection
   brand: OrderDirection
-  rating: OrderDirection
-  numReviews: OrderDirection
   countInStock: OrderDirection
   description: OrderDirection
 }
 
 input ProductUpdateInput {
   name: String
-  slug: String
   category: String
   price: Float
   brand: String
-  rating: Float
-  numReviews: Float
   countInStock: Float
   description: String
   user: UserRelateToOneForUpdateInput
@@ -349,12 +364,9 @@ input ProductUpdateArgs {
 
 input ProductCreateInput {
   name: String
-  slug: String
   category: String
   price: Float
   brand: String
-  rating: Float
-  numReviews: Float
   countInStock: Float
   description: String
   user: UserRelateToOneForCreateInput
@@ -373,8 +385,6 @@ input ImageRelateToManyForCreateInput {
 
 type Image {
   id: ID!
-  name: String
-  altText: String
   image: ImageFieldOutput
 }
 
@@ -403,19 +413,13 @@ input ImageWhereInput {
   OR: [ImageWhereInput!]
   NOT: [ImageWhereInput!]
   id: IDFilter
-  name: StringFilter
-  altText: StringFilter
 }
 
 input ImageOrderByInput {
   id: OrderDirection
-  name: OrderDirection
-  altText: OrderDirection
 }
 
 input ImageUpdateInput {
-  name: String
-  altText: String
   image: ImageFieldInput
 }
 
@@ -434,8 +438,6 @@ input ImageUpdateArgs {
 }
 
 input ImageCreateInput {
-  name: String
-  altText: String
   image: ImageFieldInput
 }
 
@@ -685,6 +687,65 @@ input ParcelRelateToOneForCreateInput {
   connect: ParcelWhereUniqueInput
 }
 
+type Withdraw {
+  id: ID!
+  amount: Float
+  bkashNumber: String
+  status: String
+  time: DateTime
+  transationID: String
+  user: User
+}
+
+input WithdrawWhereUniqueInput {
+  id: ID
+}
+
+input WithdrawWhereInput {
+  AND: [WithdrawWhereInput!]
+  OR: [WithdrawWhereInput!]
+  NOT: [WithdrawWhereInput!]
+  id: IDFilter
+  amount: FloatFilter
+  bkashNumber: StringFilter
+  status: StringNullableFilter
+  time: DateTimeNullableFilter
+  transationID: StringFilter
+  user: UserWhereInput
+}
+
+input WithdrawOrderByInput {
+  id: OrderDirection
+  amount: OrderDirection
+  bkashNumber: OrderDirection
+  status: OrderDirection
+  time: OrderDirection
+  transationID: OrderDirection
+}
+
+input WithdrawUpdateInput {
+  amount: Float
+  bkashNumber: String
+  status: String
+  time: DateTime
+  transationID: String
+  user: UserRelateToOneForUpdateInput
+}
+
+input WithdrawUpdateArgs {
+  where: WithdrawWhereUniqueInput!
+  data: WithdrawUpdateInput!
+}
+
+input WithdrawCreateInput {
+  amount: Float
+  bkashNumber: String
+  status: String
+  time: DateTime
+  transationID: String
+  user: UserRelateToOneForCreateInput
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -739,6 +800,15 @@ type Mutation {
   updateParcelItems(data: [ParcelItemUpdateArgs!]!): [ParcelItem]
   deleteParcelItem(where: ParcelItemWhereUniqueInput!): ParcelItem
   deleteParcelItems(where: [ParcelItemWhereUniqueInput!]!): [ParcelItem]
+  createWithdraw(data: WithdrawCreateInput!): Withdraw
+  createWithdraws(data: [WithdrawCreateInput!]!): [Withdraw]
+  updateWithdraw(
+    where: WithdrawWhereUniqueInput!
+    data: WithdrawUpdateInput!
+  ): Withdraw
+  updateWithdraws(data: [WithdrawUpdateArgs!]!): [Withdraw]
+  deleteWithdraw(where: WithdrawWhereUniqueInput!): Withdraw
+  deleteWithdraws(where: [WithdrawWhereUniqueInput!]!): [Withdraw]
   endSession: Boolean!
   authenticateUserWithPassword(
     email: String!
@@ -757,6 +827,7 @@ type Mutation {
     parcelItems: [ProductInputForParcel!]
   ): Parcel
   changeParcelStatus(status: String!, parcelId: String!): Parcel
+  withdrawRequest(amount: Int!, bkashNumber: String!): Withdraw
 }
 
 union UserAuthenticationWithPasswordResult =
@@ -827,6 +898,14 @@ type Query {
   ): [ParcelItem!]
   parcelItem(where: ParcelItemWhereUniqueInput!): ParcelItem
   parcelItemsCount(where: ParcelItemWhereInput! = {}): Int
+  withdraws(
+    where: WithdrawWhereInput! = {}
+    orderBy: [WithdrawOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Withdraw!]
+  withdraw(where: WithdrawWhereUniqueInput!): Withdraw
+  withdrawsCount(where: WithdrawWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

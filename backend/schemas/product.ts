@@ -1,17 +1,24 @@
 import { list } from "@keystone-6/core";
-import { float, relationship, text } from "@keystone-6/core/fields";
+import { float, relationship, select, text } from "@keystone-6/core/fields";
 
 export const product = list({
   // Here are the fields that `User` will have. We want an email and password so they can log in
   // a name so we can refer to them, and a way to connect users to posts.
   fields: {
     name: text({ validation: { isRequired: true } }),
-    slug: text({ validation: { isRequired: true }, isIndexed: "unique" }),
-    category: text(),
+    category: select({
+      options: [
+        { label: "Campaign", value: "campaign" },
+        { label: "Unstitched Dress", value: "unstitchedDress" },
+        { label: "Lehenga", value: "lehenga" },
+        { label: "Womens Fashion", value: "womensFashion" },
+        { label: "T-shirt ", value: "tShirt" },
+        { label: "Panjabi", value: "panjabi" },
+      ],
+      defaultValue: "womensFashion",
+    }),
     price: float({ validation: { isRequired: true } }),
     brand: text(),
-    rating: float({ defaultValue: 0 }),
-    numReviews: float({ defaultValue: 0 }),
     countInStock: float({ validation: { isRequired: true } }),
     description: text(),
     user: relationship({ ref: "User.products", many: false }),

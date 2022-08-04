@@ -14,6 +14,8 @@ export const useForm = (initial: any = {}) => {
       value = parseFloat(value);
     }
     if (type === "file") {
+      console.log(e);
+
       [value] = e.target.files;
     }
     setInputs({ ...inputs, [name]: value });

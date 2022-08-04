@@ -7,11 +7,25 @@ import { PARCEL_LIST_QUERY_FOR_USER } from "../../resolvers/parcel/query";
 
 const orderHistoryScreen = () => {
   const user = useUser();
-  console.log(user);
 
   const { data, loading, error } = useQuery(PARCEL_LIST_QUERY_FOR_USER, {
     variables: { userId: user?.id },
   });
+
+  if (loading) {
+    return (
+      <Layout title="order history">
+        <div className="flex items-center justify-center">
+          <div
+            className="inline-block w-8 h-8 border-4 rounded-full spinner-border animate-spin"
+            role="status"
+          ></div>
+        </div>
+      </Layout>
+    );
+  } else if (data?.parcels.length === 0) {
+    return <Layout title="order history">You Have no parcel to show</Layout>;
+  }
 
   return (
     <Layout title="order history">

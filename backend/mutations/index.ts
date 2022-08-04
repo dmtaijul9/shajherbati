@@ -1,6 +1,7 @@
 import { graphQLSchemaExtension } from "@keystone-6/core";
 import addToParcelList from "./addToParcelList";
 import changeParcelStatus from "./changeParcelStatus";
+import withdrawRequest from "./withdrawRequest";
 
 const graphql = String.raw;
 
@@ -24,12 +25,15 @@ export const extendGraphQlSchema = graphQLSchemaExtension({
       ): Parcel
 
       changeParcelStatus(status: String!, parcelId: String!): Parcel
+
+      withdrawRequest(amount: Int!, bkashNumber: String!): Withdraw
     }
   `,
   resolvers: {
     Mutation: {
       addToParcelList,
       changeParcelStatus,
+      withdrawRequest,
     },
   },
 });
