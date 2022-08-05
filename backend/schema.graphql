@@ -277,6 +277,7 @@ type Product {
   brand: String
   countInStock: Float
   description: String
+  createdAt: DateTime
   user: User
   productImg(
     where: ImageWhereInput! = {}
@@ -286,6 +287,9 @@ type Product {
   ): [Image!]
   productImgCount(where: ImageWhereInput! = {}): Int
 }
+
+scalar DateTime
+  @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 input ProductWhereUniqueInput {
   id: ID
@@ -302,6 +306,7 @@ input ProductWhereInput {
   brand: StringFilter
   countInStock: FloatFilter
   description: StringFilter
+  createdAt: DateTimeNullableFilter
   user: UserWhereInput
   productImg: ImageManyRelationFilter
 }
@@ -315,6 +320,17 @@ input FloatFilter {
   gt: Float
   gte: Float
   not: FloatFilter
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeNullableFilter
 }
 
 input ImageManyRelationFilter {
@@ -331,6 +347,7 @@ input ProductOrderByInput {
   brand: OrderDirection
   countInStock: OrderDirection
   description: OrderDirection
+  createdAt: OrderDirection
 }
 
 input ProductUpdateInput {
@@ -340,6 +357,7 @@ input ProductUpdateInput {
   brand: String
   countInStock: Float
   description: String
+  createdAt: DateTime
   user: UserRelateToOneForUpdateInput
   productImg: ImageRelateToManyForUpdateInput
 }
@@ -369,6 +387,7 @@ input ProductCreateInput {
   brand: String
   countInStock: Float
   description: String
+  createdAt: DateTime
   user: UserRelateToOneForCreateInput
   productImg: ImageRelateToManyForCreateInput
 }
@@ -461,9 +480,6 @@ type Parcel {
   itemsCount(where: ParcelItemWhereInput! = {}): Int
 }
 
-scalar DateTime
-  @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
-
 input ParcelWhereUniqueInput {
   id: ID
 }
@@ -483,17 +499,6 @@ input ParcelWhereInput {
   status: StringNullableFilter
   user: UserWhereInput
   items: ParcelItemManyRelationFilter
-}
-
-input DateTimeNullableFilter {
-  equals: DateTime
-  in: [DateTime!]
-  notIn: [DateTime!]
-  lt: DateTime
-  lte: DateTime
-  gt: DateTime
-  gte: DateTime
-  not: DateTimeNullableFilter
 }
 
 input ParcelItemManyRelationFilter {
@@ -1001,8 +1006,10 @@ enum KeystoneAdminUISortDirection {
 }
 
 input ProductInputForParcel {
+  id: ID!
   name: String!
   imageUrl: String!
   price: Int!
   quantity: Int!
+  countInStock: Int!
 }

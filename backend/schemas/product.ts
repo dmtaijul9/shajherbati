@@ -1,5 +1,11 @@
 import { list } from "@keystone-6/core";
-import { float, relationship, select, text } from "@keystone-6/core/fields";
+import {
+  float,
+  relationship,
+  select,
+  text,
+  timestamp,
+} from "@keystone-6/core/fields";
 
 export const product = list({
   // Here are the fields that `User` will have. We want an email and password so they can log in
@@ -21,6 +27,7 @@ export const product = list({
     brand: text(),
     countInStock: float({ validation: { isRequired: true } }),
     description: text(),
+    createdAt: timestamp({ defaultValue: { kind: "now" } }),
     user: relationship({ ref: "User.products", many: false }),
     productImg: relationship({
       ref: "Image",

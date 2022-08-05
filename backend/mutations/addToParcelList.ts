@@ -1,9 +1,12 @@
 import { KeystoneContext } from "@keystone-6/core/types";
 interface ProductInputForPercel {
+  map(arg0: (item: ProductInputForPercel) => number);
+  id: string;
   name: string;
   imageUrl: string;
   price: number;
   quantity: number;
+  countInStock: number;
 }
 
 interface AddToCartInput {
@@ -32,7 +35,25 @@ export default async function addToCart(
   } = await args;
   const sesh = context.session;
 
-  console.log(args);
+  const countInStockUpdateArr = parcelItems?.map(
+    (item: ProductInputForPercel) => {
+      return {
+        where: { id: item.id },
+        data: {
+          countInStock: item.countInStock - item.quantity,
+        },
+      };
+    }
+  );
+
+  const parcelItemsToStore = parcelItems?.map((item: ProductInputForPercel) => {
+    return {
+      name: item.name,
+      imageUrl: item.imageUrl,
+      price: item.price,
+      quantity: item.quantity,
+    };
+  });
 
   if (!sesh.itemId) {
     throw new Error("You Must be logged in to do this!");
@@ -40,10 +61,12 @@ export default async function addToCart(
   /*   const allCartItems = await context.query.Parcel.findMany({
     where: { user: { id: { equals: sesh.itemId } } },
   }); */
-  const resul = JSON.parse(JSON.stringify(parcelItems));
-  console.log(resul);
 
-  const parcel = context.db.Parcel.createOne({
+  const updatedCountInStock = await context.db.Product.updateMany({
+    data: countInStockUpdateArr,
+  });
+
+  const parcel = await context.db.Parcel.createOne({
     data: {
       name,
       address,
@@ -53,7 +76,7 @@ export default async function addToCart(
       shippingMethod,
       user: { connect: { id: sesh.itemId } },
       items: {
-        create: parcelItems,
+        create: parcelItemsToStore,
       },
     },
   });

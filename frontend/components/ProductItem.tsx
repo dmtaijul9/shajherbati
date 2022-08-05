@@ -5,14 +5,13 @@ import React from "react";
 
 const ProductItem = ({ product }: any) => {
   return (
-    <div className="card">
+    <div className="max-w-[300px] card m-auto">
       <Link href={`/product/${product.id}`}>
         <a>
-          <Image
+          <img
+            className="w-full"
             src={product?.productImg[0].image.url}
             alt={product?.name}
-            width="400"
-            height="350"
           />
         </a>
       </Link>

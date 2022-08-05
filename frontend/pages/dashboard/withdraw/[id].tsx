@@ -27,7 +27,7 @@ const WithdrawDetails = () => {
           <div className="flex flex-col w-full px-2 py-10 space-y-2 bg-gray-200 rounded-md">
             <div className="flex flex-wrap justify-between px-5 py-2 border-b border-gray-400">
               <p>Withdraw Amount</p>
-              <p className="font-bold">{withDraw?.amount}</p>
+              <p className="font-bold">{withDraw?.amount} TK</p>
             </div>
             <div className="flex flex-wrap justify-between px-5 py-2 border-b border-gray-400">
               <p>Bkash Number</p>

@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 export const QUERY_PRODUCT_WOMENS_FASHION = gql`
   query {
     products(
-      where: { category: { equals: "womens-fashion" } }
+      where: { category: { equals: "womensFashion" } }
       take: 8
       skip: 0
     ) {
@@ -17,6 +17,39 @@ export const QUERY_PRODUCT_WOMENS_FASHION = gql`
       }
       brand
       price
+    }
+  }
+`;
+
+export const GET_PRODUCT_QUERY = gql`
+  query GET_PRODUCT_QUERY(
+    $take: Int
+    $skip: Int
+    $category: String
+    $search: String
+  ) {
+    productsCount(
+      where: { name: { contains: $search }, category: { equals: $category } }
+    )
+    products(
+      take: $take
+      skip: $skip
+      orderBy: { createdAt: desc }
+      where: { name: { contains: $search }, category: { equals: $category } }
+    ) {
+      name
+      category
+      createdAt
+      price
+      id
+      brand
+      countInStock
+      description
+      productImg {
+        image {
+          url
+        }
+      }
     }
   }
 `;

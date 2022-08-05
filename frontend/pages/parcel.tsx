@@ -3,6 +3,7 @@ import { useMutation } from "@apollo/client";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import { toast } from "react-toastify";
 import CheckoutWizard from "../components/CheckoutWizard";
@@ -14,6 +15,14 @@ const parcel = () => {
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
   const { cartItems, shippingAddress, paymentMethod } = cart;
+  const router = useRouter();
+  if (cartItems?.length === 0) {
+    return (
+      <Layout title="Empty Cart">
+        <div>Your Cart Is Empty. Please Go For Shopping</div>
+      </Layout>
+    );
+  }
 
   const total = cartItems
     .map((item: any) => item.price * item.quantity)
@@ -23,10 +32,12 @@ const parcel = () => {
     parseInt(shippingAddress?.sellPrice) +
     parseInt(shippingAddress?.deliveryCharge);
 
-  console.log(cart);
+  console.log(cartItems);
   const [createParcel, { data }] = useMutation(CREATE_PARCEL_MUTATION);
   const createParcelHandler = async () => {
     const parcelItemListArr = cartItems.map((item) => ({
+      countInStock: item.countInStock,
+      id: item.id,
       name: item.name,
       imageUrl: item.productImg[0].image.url,
       price: item.price,
@@ -49,6 +60,7 @@ const parcel = () => {
     if (parcel?.data.addToParcelList) {
       toast.success("Your Parcel has created.");
       Cookies.remove("cart");
+      router.push("/dashboard/order-history");
     }
   };
 

@@ -30,24 +30,28 @@ export default function Home({ products }: any) {
         />
       </div>
       <div id="campaign"></div>
-      <div id="womensFashion" className="py-10 ">
+      <div id="womensFashion" className="px-2 py-10 ">
         <div className="container m-auto">
           <div className="mb-10 text-center ">
             <h1 className="text-2xl font-bold uppercase">Women's Fashion</h1>
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 ">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 ">
             {womenFashion?.products.map((product, index) => {
               return <ProductItem product={product} key={index} />;
             })}
           </div>
+          <div className="mt-10 text-center">
+            {" "}
+            <button className="primary-button">Load More</button>
+          </div>
         </div>
       </div>
-      <div id="panjabi" className="py-20 bg-gray-200 ">
+      <div id="panjabi" className="px-2 py-20 bg-gray-200 ">
         <div className="container m-auto">
           <div className="mb-10 text-center ">
             <h1 className="text-2xl font-bold uppercase">Panjabi</h1>
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 ">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 ">
             {panjabi?.products.map((product, index) => {
               return <ProductItem product={product} key={index} />;
             })}
@@ -58,12 +62,12 @@ export default function Home({ products }: any) {
           </div>
         </div>
       </div>
-      <div id="tShirt" className="py-20">
+      <div id="tShirt" className="px-2 py-20 ">
         <div className="container m-auto">
           <div className="mb-10 text-center ">
             <h1 className="text-2xl font-bold uppercase">T-Shirt</h1>
           </div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 ">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 ">
             {panjabi?.products.map((product, index) => {
               return <ProductItem product={product} key={index} />;
             })}
@@ -74,9 +78,9 @@ export default function Home({ products }: any) {
           </div>
         </div>
       </div>
-      <div id="facilities" className="py-20 bg-amber-400 ">
+      <div id="facilities" className="px-5 py-20 bg-amber-400">
         <div className="container m-auto">
-          <div className="flex flex-wrap justify-around space-x-2 space-y-2">
+          <div className="flex flex-wrap items-center justify-around space-x-2 space-y-2">
             {" "}
             <FaciCard
               icon="shipping"
@@ -98,14 +102,14 @@ export default function Home({ products }: any) {
       </div>
       <div id="faq" className="py-20">
         <div className="container m-auto">
-          <div className="pb-10 text-center">
+          <div className="px-5 pb-10 text-center">
             <h1 className="text-2xl font-bold">FREQUENTLY ASKED QUESTIONS</h1>
             <p className="pt-3 font-light">
               Got a question? We've got answers. If you have other question, see
               our support page
             </p>
           </div>
-          <div className="grid grid-cols-3 gap-5 mt-10">
+          <div className="grid grid-cols-1 gap-5 px-5 mt-10 md:grid-cols-3">
             <div className="flex flex-col space-y-2">
               <h1 className="font-bold text-amber-500">
                 Where is your location, please?

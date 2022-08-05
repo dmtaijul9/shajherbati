@@ -17,6 +17,32 @@ export default async function changeParcelStatus(
     throw new Error("You Must be logged in to do this!");
   }
 
+  if (status === "paymentDelivered") {
+    const { sellPrice, deliveryCharge, user } =
+      await context.query.Parcel.findOne({
+        where: { id: parcelId },
+        query: `sellPrice deliveryCharge user {paymentDue id}`,
+      });
+
+    const { items } = await context.query.Parcel.findOne({
+      where: { id: parcelId },
+      query: `items {price quantity}`,
+    });
+
+    const total = items
+      .map((item: any) => item.price * item.quantity)
+      .reduce((sum, item) => (sum += item));
+
+    const profit = sellPrice - (total + deliveryCharge);
+
+    const updatedPaymentDue = await context.db.User.updateOne({
+      where: { id: user.id },
+      data: {
+        paymentDue: user.paymentDue + profit,
+      },
+    });
+  }
+
   const parcel = await context.db.Parcel.updateOne({
     where: { id: parcelId },
     data: { status: status },

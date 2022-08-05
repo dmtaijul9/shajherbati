@@ -8,10 +8,12 @@ const graphql = String.raw;
 export const extendGraphQlSchema = graphQLSchemaExtension({
   typeDefs: graphql`
     input ProductInputForParcel {
+      id: ID!
       name: String!
       imageUrl: String!
       price: Int!
       quantity: Int!
+      countInStock: Int!
     }
     type Mutation {
       addToParcelList(
