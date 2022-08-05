@@ -2,13 +2,24 @@
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
+import { toast } from "react-toastify";
 import CheckoutWizard from "../components/CheckoutWizard";
 import Layout from "../components/Layout";
 import { useForm } from "../lib/hooks/useForm";
+import useUser from "../lib/hooks/useUser";
 import { Store } from "../utils/store";
 
 const shipping = () => {
+  const user = useUser();
+
   const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, []);
+
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
   const { shippingAddress } = cart;
@@ -29,9 +40,23 @@ const shipping = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    const { fullName, address, phoneNumber, sellPrice, deliveryCharge } =
+      inputs;
+
+    if (deliveryCharge !== ("70" || "150")) {
+      toast.error("Please Input All field");
+      return;
+    }
+    const variables = {
+      fullName: fullName,
+      address: address,
+      phoneNumber: phoneNumber,
+      sellPrice: sellPrice,
+      deliveryCharge: parseInt(deliveryCharge),
+    };
     dispatch({
       type: "SAVE_SHIPPING_ADDRESS",
-      payload: { ...inputs },
+      payload: variables,
     });
     Cookies.set(
       "cart",
@@ -98,14 +123,17 @@ const shipping = () => {
         </div>
         <div className="mb-4">
           <label htmlFor="deliveryCharge">Delivery Charge</label>
-          <input
-            className="w-full"
-            id="deliveryCharge"
-            autoFocus
+          <select
             name="deliveryCharge"
+            id="deliveryCharge"
+            className="w-full"
             value={inputs.deliveryCharge}
             onChange={handleChange}
-          />
+          >
+            <option value="">Select One</option>
+            <option value="70">Dhaka</option>
+            <option value="150">Outside Dhaka</option>
+          </select>
         </div>
 
         <div className="flex justify-between mb-4">

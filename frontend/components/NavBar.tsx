@@ -26,6 +26,10 @@ const NavBar = () => {
   }, [cart?.cartItems]);
   console.log(isNavOpen);
 
+  const isNavOpenHandler = () => {
+    setIsNavOpen(false);
+  };
+
   const logoutHandler = () => {
     Cookies.remove("cart");
     dispatch({ type: "CART_RESET" });
@@ -146,29 +150,28 @@ const NavBar = () => {
             )}
           </div>
         </div>
+        <div className="hidden  md:space-x-2 md:h-14 md:flex md:items-center md:justify-center">
+          <Link href="/campaign">
+            <a className="p-2">Campaign</a>
+          </Link>
+          <Link href="/unstitched-dress">
+            <a className="p-2">Unstitched Dress</a>
+          </Link>
+          <Link href="/lehenga">
+            <a className="p-2">Lehenga</a>
+          </Link>
+          <Link href="/womens-fashion">
+            <a className="p-2">Women's Fashion</a>
+          </Link>
+          <Link href="/panjabi">
+            <a className="p-2">Panjabi</a>
+          </Link>
+          <Link href="/t-shirt ">
+            <a className="p-2">T-shirt</a>
+          </Link>
+        </div>
 
-        {isNavOpen ? (
-          <div className="hidden space-x-2 md:h-14 md:flex md:items-center md:justify-center">
-            <Link href="/campaign">
-              <a className="p-2">Campaign</a>
-            </Link>
-            <Link href="/unstitched-dress">
-              <a className="p-2">Unstitched Dress</a>
-            </Link>
-            <Link href="/lehenga">
-              <a className="p-2">Lehenga</a>
-            </Link>
-            <Link href="/womens-fashion">
-              <a className="p-2">Women's Fashion</a>
-            </Link>
-            <Link href="/panjabi">
-              <a className="p-2">Panjabi</a>
-            </Link>
-            <Link href="/t-shirt ">
-              <a className="p-2">T-shirt</a>
-            </Link>
-          </div>
-        ) : (
+        {!isNavOpen && (
           <div className="absolute left-0 z-10 flex flex-col items-center justify-center w-screen min-h-screen space-y-5 bg-gray-200 md:hidden">
             <Link href="/campaign">
               <a className="p-2">Campaign</a>
