@@ -150,7 +150,7 @@ const NavBar = () => {
             )}
           </div>
         </div>
-        <div className="hidden  md:space-x-2 md:h-14 md:flex md:items-center md:justify-center">
+        <div className="hidden md:space-x-2 md:h-14 md:flex md:items-center md:justify-center">
           <Link href="/campaign">
             <a className="p-2">Campaign</a>
           </Link>
@@ -171,7 +171,7 @@ const NavBar = () => {
           </Link>
         </div>
 
-        {!isNavOpen && (
+        {isNavOpen && (
           <div className="absolute left-0 z-10 flex flex-col items-center justify-center w-screen min-h-screen space-y-5 bg-gray-200 md:hidden">
             <Link href="/campaign">
               <a className="p-2">Campaign</a>

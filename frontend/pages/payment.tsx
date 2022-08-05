@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-hooks/rules-of-hooks */
 import Cookies from "js-cookie";
 import Link from "next/link";
@@ -6,11 +7,16 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import CheckoutWizard from "../components/CheckoutWizard";
 import Layout from "../components/Layout";
+import useUser from "../lib/hooks/useUser";
 import { Store } from "../utils/store";
 
 const payment = () => {
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+  const user = useUser();
+
   const router = useRouter();
+
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
   const { shippingAddress, paymentMethod } = cart;
@@ -38,6 +44,9 @@ const payment = () => {
   };
 
   useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
     if (!shippingAddress?.address) {
       router.push("/shipping");
     }

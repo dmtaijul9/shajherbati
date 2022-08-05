@@ -2,12 +2,12 @@
 import { useMutation } from "@apollo/client";
 import Cookies from "js-cookie";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import CheckoutWizard from "../components/CheckoutWizard";
 import Layout from "../components/Layout";
+import useUser from "../lib/hooks/useUser";
 import { CREATE_PARCEL_MUTATION } from "../resolvers/parcel/mutation";
 import { Store } from "../utils/store";
 
@@ -16,6 +16,14 @@ const parcel = () => {
   const { cart } = state;
   const { cartItems, shippingAddress, paymentMethod } = cart;
   const router = useRouter();
+  const user = useUser();
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, []);
+
   if (cartItems?.length === 0) {
     return (
       <Layout title="Empty Cart">

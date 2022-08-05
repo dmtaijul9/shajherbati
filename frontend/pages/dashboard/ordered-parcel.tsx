@@ -1,11 +1,29 @@
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
+import useUser from "../../lib/hooks/useUser";
 import { PARCEL_LIST_QUERY_FOR_ADMIN } from "../../resolvers/parcel/query";
 
 const orderedParcelScreen = () => {
+  const user = useUser();
+  const [message, setMessage] = useState("");
+  console.log(user);
+
   const { data, loading, error } = useQuery(PARCEL_LIST_QUERY_FOR_ADMIN);
+  useEffect(() => {
+    if (user?.userType !== "admin") {
+      setMessage("Sorry Sir!, You are not Admin of the site");
+    }
+  }, []);
+
+  if (message) {
+    return (
+      <Layout title="admin page">
+        <div> {message} </div>
+      </Layout>
+    );
+  }
 
   const pendingParcel = data?.parcels.filter(
     (item) => item.status === "pending"

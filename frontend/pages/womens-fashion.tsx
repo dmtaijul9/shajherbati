@@ -1,8 +1,10 @@
 import { useQuery } from "@apollo/client";
+import { SearchIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import ProductItem from "../components/ProductItem";
 import { getProductByCategory } from "../lib/getProductByCategory";
+import { useForm } from "../lib/hooks/useForm";
 import { QUERY_PRODUCT_WOMENS_FASHION } from "../resolvers/product/query";
 
 const womensFashion = () => {
@@ -10,6 +12,10 @@ const womensFashion = () => {
   const [skip, setSkip] = useState(0);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+
+  const { inputs, handleChange } = useForm({
+    search: "",
+  });
 
   const { data, error, loading } = getProductByCategory(
     take,
@@ -20,11 +26,53 @@ const womensFashion = () => {
 
   const pageCount = Math.ceil(data?.productsCount / take);
 
+  if (loading) {
+    return (
+      <Layout title="loading">
+        <div>
+          <h1>Loading ...</h1>
+        </div>
+      </Layout>
+    );
+  }
+
+  const handleSubmit = () => {
+    setSearch(inputs.search);
+  };
+
   return (
     <Layout title="Womens Fashion">
       <section>
-        <div className="pb-4 mb-5 text-2xl font-bold text-center border-b-2 border-amber-400">
-          <h1>Womens Fashion</h1>
+        <div className="flex flex-wrap items-center justify-between pb-4 mb-5 text-2xl font-bold border-b-2 border-amber-400">
+          <div>
+            {" "}
+            <h1>Womens Fashion</h1>
+          </div>
+
+          <div className="flex justify-center">
+            <div className="xl:w-96">
+              <div className="relative flex items-stretch w-full input-group">
+                <input
+                  type="search"
+                  className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-amber-400 focus:outline-none"
+                  placeholder="Search"
+                  aria-label="Search"
+                  aria-describedby="button-addon2"
+                  name="search"
+                  value={inputs.search}
+                  onChange={handleChange}
+                />
+                <button
+                  className="btn inline-block px-6 py-2.5 bg-amber-400 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-amber-500 hover:shadow-lg focus:bg-amber-500  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-amber-600 active:shadow-lg transition duration-150 ease-in-out flex items-center"
+                  type="button"
+                  id="button-addon2"
+                  onClick={handleSubmit}
+                >
+                  <SearchIcon className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         {data?.productsCount <= 0 ? (
           <div>There have no product in this category</div>

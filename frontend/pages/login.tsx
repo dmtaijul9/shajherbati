@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useMutation } from "@apollo/client";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
@@ -22,7 +21,7 @@ const login = () => {
     if (user) {
       router.push("/");
     }
-  }, [user]);
+  }, []);
 
   const [signin] = useMutation(SIGNIN_MUTATION);
 
