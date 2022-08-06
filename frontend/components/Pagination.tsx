@@ -1,47 +1,34 @@
-import Link from "./Link";
-
-interface PaginationProps {
-  totalPages: string;
-  currentPage: string;
-}
-
-const Pagination = ({ totalPages, currentPage }: PaginationProps) => {
-  const prevPage = parseInt(currentPage) - 1 > 0;
-  const nextPage = parseInt(currentPage) + 1 <= parseInt(totalPages);
-
+const Pagination = ({ skip, take, page, pageCount, setSkip, setPage }) => {
   return (
-    <div className="pt-10 pb-8 space-y-2 md:space-y-5">
-      <nav className="flex justify-center space-x-10">
-        {!prevPage && (
-          <button
-            className="cursor-auto disabled:opacity-50"
-            disabled={!prevPage}
-          >
-            Previous
-          </button>
-        )}
-        {prevPage && (
-          <Link href={`/blog/page/${parseInt(currentPage) - 1}`}>
-            <button>Previous</button>
-          </Link>
-        )}
-        <span>
-          {currentPage} of {totalPages}
-        </span>
-        {!nextPage && (
-          <button
-            className="cursor-auto disabled:opacity-50"
-            disabled={!nextPage}
-          >
-            Next
-          </button>
-        )}
-        {nextPage && (
-          <Link href={`/blog/page/${parseInt(currentPage) + 1}`}>
-            <button>Next</button>
-          </Link>
-        )}
-      </nav>
+    <div className="flex items-center justify-between max-w-md pt-5 pb-10 m-auto">
+      <div>
+        <button
+          className="primary-button disabled:bg-gray-200"
+          onClick={() => {
+            setSkip(skip - take);
+            setPage(page - 1);
+          }}
+          disabled={skip <= 0}
+        >
+          Prev-
+        </button>
+      </div>
+      <div>
+        {" "}
+        {page} out of {pageCount}{" "}
+      </div>
+      <div>
+        <button
+          className="primary-button disabled:bg-gray-200"
+          disabled={pageCount == page}
+          onClick={() => {
+            setSkip(skip + take);
+            setPage(page + 1);
+          }}
+        >
+          -Next
+        </button>
+      </div>
     </div>
   );
 };

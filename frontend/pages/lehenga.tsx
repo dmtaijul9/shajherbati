@@ -1,8 +1,9 @@
 import { SearchIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 import Layout from "../components/Layout";
+import Pagination from "../components/Pagination";
 import ProductItem from "../components/ProductItem";
-import { getProductByCategory } from "../lib/getProductByCategory";
+import { getProductByCategory } from "../lib/getDataFromApi";
 import { useForm } from "../lib/hooks/useForm";
 
 const lehenga = () => {
@@ -78,33 +79,14 @@ const lehenga = () => {
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-between max-w-md pt-5 pb-10 m-auto">
-              <div>
-                <button
-                  className="primary-button disabled:bg-gray-200"
-                  onClick={() => {
-                    setSkip(skip - take);
-                    setPage(page - 1);
-                  }}
-                  disabled={skip <= 0}
-                >
-                  Prev-
-                </button>
-              </div>
-              <div> 1 out of 20 </div>
-              <div>
-                <button
-                  className="primary-button disabled:bg-gray-200"
-                  disabled={pageCount == page}
-                  onClick={() => {
-                    setSkip(skip + take);
-                    setPage(page + 1);
-                  }}
-                >
-                  -Next
-                </button>
-              </div>
-            </div>
+            <Pagination
+              skip={skip}
+              take={take}
+              page={page}
+              pageCount={pageCount}
+              setSkip={setSkip}
+              setPage={setPage}
+            />
           </>
         )}
       </section>

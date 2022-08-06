@@ -21,6 +21,7 @@ export const withdraw = list({
       ],
       defaultValue: "pending",
     }),
+
     time: timestamp({ defaultValue: { kind: "now" } }),
     transationID: text(),
     user: relationship({ ref: "User.withdrawn" }),
