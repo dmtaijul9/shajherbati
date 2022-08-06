@@ -25,7 +25,7 @@ const withdrawHistory = () => {
     return (
       <Layout title="Withdraw History">
         <section>
-          <div>You Have No Withdraw History</div>
+          <div>Loading</div>
         </section>
       </Layout>
     );
@@ -35,7 +35,7 @@ const withdrawHistory = () => {
     return (
       <Layout title="Withdraw History">
         <section>
-          <div>Loading</div>
+          <div>You Have No Withdraw History</div>
         </section>
       </Layout>
     );

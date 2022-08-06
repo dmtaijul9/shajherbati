@@ -8,3 +8,15 @@ export const WITHDRAW_REQUEST_MUTATION = gql`
     }
   }
 `;
+
+export const UPDATE_WITHDRAW_MUATION = gql`
+  mutation WITHDRAW_REQUEST_MUTATION($transationID: String!, $id: ID!) {
+    updateWithdraw(
+      where: { id: $id }
+      data: { transationID: $transationID, status: "done" }
+    ) {
+      status
+      transationID
+    }
+  }
+`;

@@ -1,9 +1,25 @@
 import { gql } from "@apollo/client";
 
 export const PARCEL_LIST_QUERY_FOR_USER = gql`
-  query PARCEL_LIST_QUERY_FOR_USER($userId: ID) {
+  query PARCEL_LIST_QUERY_FOR_USER(
+    $userId: ID!
+    $search: String
+    $skip: Int
+    $take: Int
+  ) {
+    parcelsCount(
+      where: {
+        user: { id: { equals: $userId } }
+        phoneNumber: { contains: $search }
+      }
+    )
     parcels(
-      where: { user: { id: { equals: $userId } } }
+      where: {
+        user: { id: { equals: $userId } }
+        phoneNumber: { contains: $search }
+      }
+      skip: $skip
+      take: $take
       orderBy: { createdAt: desc }
     ) {
       id

@@ -23,6 +23,7 @@ export const USER_WITHDRAW_REQ = gql`
 
 export const USER_WITHDRAW_REQ_ADMIN = gql`
   query USER_WITHDRAW_REQ_ADMIN($take: Int, $skip: Int, $search: String) {
+    withdrawsCount(where: { bkashNumber: { contains: $search } })
     withdraws(
       where: { bkashNumber: { contains: $search } }
       take: $take

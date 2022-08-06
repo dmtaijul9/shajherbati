@@ -2,11 +2,16 @@ import { useMutation, useQuery } from "@apollo/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import Layout from "../../components/Layout";
 import { useForm } from "../../lib/hooks/useForm";
 import useUser from "../../lib/hooks/useUser";
-import { CHANGE_PARCEL_STATUS_MUTATION } from "../../resolvers/parcel/mutation";
+import {
+  CHANGE_PARCEL_STATUS_MUTATION,
+  DELETE_PARCEL_MUTATION,
+} from "../../resolvers/parcel/mutation";
 import { SINGLE_PARCEL_QUERY } from "../../resolvers/parcel/query";
+import { ME } from "../../resolvers/user/query";
 
 const singleParcelViewScreen = () => {
   const user = useUser();
@@ -44,6 +49,17 @@ const singleParcelViewScreen = () => {
       },
       refetchQueries: "active",
     });
+  };
+
+  const [deleteParcel] = useMutation(DELETE_PARCEL_MUTATION);
+
+  const cancelOrderHandler = async () => {
+    const deleted = await deleteParcel({
+      variables: { id: data?.parcel.id },
+      refetchQueries: [{ query: ME }],
+    });
+    router.push("/");
+    toast.success("The parcel has deleted successfully");
   };
 
   return (
@@ -114,6 +130,25 @@ const singleParcelViewScreen = () => {
               </div>
             </div>
           </div>
+          {user?.userType !== "admin" &&
+          data?.parcel.status === ("pending" || "accepted") ? (
+            <div className="text-center">
+              <button
+                className="primary-button"
+                type="button"
+                onClick={cancelOrderHandler}
+              >
+                Cancel Order
+              </button>
+            </div>
+          ) : (
+            <div className="text-center">
+              <div className="primary-button">
+                You can not delete the parcel now. Becouse, the parcel already
+                out for delivery.{" "}
+              </div>
+            </div>
+          )}
         </div>
         <div className="col-span-2">
           <div>

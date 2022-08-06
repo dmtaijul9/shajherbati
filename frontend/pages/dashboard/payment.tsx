@@ -28,6 +28,8 @@ const payment = () => {
       variables: inputs,
       refetchQueries: [{ query: ME }],
     });
+
+    toast.success("You Request Is Successfull");
   };
   return (
     <Layout title="Payment history">

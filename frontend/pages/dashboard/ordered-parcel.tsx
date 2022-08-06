@@ -1,26 +1,28 @@
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
+import Pagination from "../../components/Pagination";
 import useUser from "../../lib/hooks/useUser";
 import { PARCEL_LIST_QUERY_FOR_ADMIN } from "../../resolvers/parcel/query";
 
 const orderedParcelScreen = () => {
+  const [skip, setSkip] = useState(0);
+  const [page, setPage] = useState(1);
+  const [take, setTake] = useState(10);
+
   const user = useUser();
-  const [message, setMessage] = useState("");
-  console.log(user);
+  const router = useRouter();
 
   const { data, loading, error } = useQuery(PARCEL_LIST_QUERY_FOR_ADMIN);
-  useEffect(() => {
-    if (user?.userType !== "admin") {
-      setMessage("Sorry Sir!, You are not Admin of the site");
-    }
-  }, []);
 
-  if (message) {
+  const pageCount = Math.ceil(data?.withdrawsCount / take);
+
+  if (user?.userType !== "admin") {
     return (
       <Layout title="admin page">
-        <div> {message} </div>
+        <div> Sorry Sir! You are not Admin of the site </div>
       </Layout>
     );
   }
@@ -78,13 +80,18 @@ const orderedParcelScreen = () => {
                 <th className="px-5 text-center">Status</th>
 
                 <th className="px-5 text-center">Total Quantity</th>
-                <th className="px-5 text-center">Total Price</th>
-                <th className="px-5 text-right"></th>
+                <th className="px-5 text-right">Total Price</th>
               </tr>
             </thead>
             <tbody>
               {data?.parcels.map((item, index) => (
-                <tr key={index} className="border-b">
+                <tr
+                  key={index}
+                  className="border-b"
+                  onClick={() => {
+                    router.push(`/parcelview/${item.id}`);
+                  }}
+                >
                   <td>{item.name}</td>
                   <td className="p-5 text-center">{item.phoneNumber}</td>
                   <td className="p-5 text-center">{item.status}</td>
@@ -94,18 +101,21 @@ const orderedParcelScreen = () => {
                       .map((parcelItem) => parcelItem.quantity)
                       .reduce((total, quantity) => (total += quantity))}{" "}
                   </td>
-                  <td className="p-5 text-center">
-                    {item.sellPrice + item.deliveryCharge} TK
-                  </td>
                   <td className="p-5 text-right">
-                    <Link href={`/parcelview/${item.id}`}>
-                      <a className="primary-button">View Parcel</a>
-                    </Link>
+                    {item.sellPrice + item.deliveryCharge} TK
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          <Pagination
+            skip={skip}
+            take={take}
+            page={page}
+            pageCount={pageCount}
+            setSkip={setSkip}
+            setPage={setPage}
+          />
         </div>
       </section>
     </Layout>

@@ -39,3 +39,12 @@ export const CHANGE_PARCEL_STATUS_MUTATION = gql`
     }
   }
 `;
+
+export const DELETE_PARCEL_MUTATION = gql`
+  mutation DELETE_PARCEL_MUTATION($id: ID!) {
+    deleteParcel(where: { id: $id }) {
+      name
+      phoneNumber
+    }
+  }
+`;

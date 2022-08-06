@@ -10,13 +10,15 @@ const logout = () => {
   const [logOut] = useMutation(LOGOUT);
   const router = useRouter();
 
-  logOut({
-    refetchQueries: [{ query: ME }],
-  });
+  (async function () {
+    const { data } = await logOut({
+      refetchQueries: [{ query: ME }],
+    });
 
-  setTimeout(() => {
-    router.push("/login");
-  }, 2000);
+    if (data) {
+      router.push("/login");
+    }
+  })();
 
   return (
     <Layout title="Logout page">

@@ -43,6 +43,20 @@ export default async function changeParcelStatus(
     });
   }
 
+  if (status === "returned") {
+    const { deliveryCharge, user } = await context.query.Parcel.findOne({
+      where: { id: parcelId },
+      query: `sellPrice deliveryCharge user {paymentDue id}`,
+    });
+
+    const updatedPaymentDue = await context.db.User.updateOne({
+      where: { id: user.id },
+      data: {
+        paymentDue: user.paymentDue - deliveryCharge,
+      },
+    });
+  }
+
   const parcel = await context.db.Parcel.updateOne({
     where: { id: parcelId },
     data: { status: status },

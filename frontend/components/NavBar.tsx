@@ -111,22 +111,36 @@ const NavBar = () => {
                       </DropdownLink>
                     </Menu.Item>
                   )}
-                  <Menu.Item>
-                    <DropdownLink
-                      className="dropdown-link"
-                      href="/dashboard/payment"
-                    >
-                      Payment
-                    </DropdownLink>
-                  </Menu.Item>
-                  <Menu.Item>
-                    <DropdownLink
-                      className="dropdown-link"
-                      href="/dashboard/withdraw-history"
-                    >
-                      Withdraw History
-                    </DropdownLink>
-                  </Menu.Item>
+                  {user?.userType !== "admin" && (
+                    <Menu.Item>
+                      <DropdownLink
+                        className="dropdown-link"
+                        href="/dashboard/payment"
+                      >
+                        Payment
+                      </DropdownLink>
+                    </Menu.Item>
+                  )}
+                  {user?.userType !== "admin" ? (
+                    <Menu.Item>
+                      <DropdownLink
+                        className="dropdown-link"
+                        href="/dashboard/withdraw-history"
+                      >
+                        Withdraw History
+                      </DropdownLink>
+                    </Menu.Item>
+                  ) : (
+                    <Menu.Item>
+                      <DropdownLink
+                        className="dropdown-link"
+                        href="/dashboard/withdrawn-list"
+                      >
+                        Withdrawn List
+                      </DropdownLink>
+                    </Menu.Item>
+                  )}
+
                   <Menu.Item>
                     <DropdownLink
                       className="dropdown-link"
