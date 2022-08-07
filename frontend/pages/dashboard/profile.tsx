@@ -45,7 +45,6 @@ const profile = () => {
 
     variables.id = user?.id;
 
-    console.log(variables);
     const updatedUser = await updateUser({
       variables,
       refetchQueries: [{ query: ME }],

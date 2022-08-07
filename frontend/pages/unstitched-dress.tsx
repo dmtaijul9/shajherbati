@@ -27,7 +27,7 @@ const unstitchedDress = () => {
   };
 
   const pageCount = Math.ceil(data?.productsCount / take);
-  console.log(pageCount);
+
   return (
     <Layout title="Unstitched Dress">
       {" "}

@@ -17,8 +17,6 @@ const cart = () => {
     cart: { cartItems },
   } = state;
 
-  console.log(user);
-
   const removeCardItemHandler = (item) => {
     dispatch({ type: "REMOVE_CART_ITEM", payload: item });
   };

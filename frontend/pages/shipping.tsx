@@ -32,8 +32,6 @@ const shipping = () => {
     deliveryCharge: "",
   });
 
-  console.log(state);
-
   const submitHandler = (e) => {
     e.preventDefault();
     const { fullName, address, phoneNumber, sellPrice, deliveryCharge } =

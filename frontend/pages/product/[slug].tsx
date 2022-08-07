@@ -17,7 +17,7 @@ export async function getServerSideProps(context: any) {
     },
   } = await axios({
     method: "POST",
-    url: "http://localhost:3000/api/graphql",
+    url: process.env.NEXT_PUBLIC_API_URL,
     headers: {
       "Content-Type": "application/json",
     },
@@ -51,8 +51,6 @@ export async function getServerSideProps(context: any) {
 }
 
 const productScreen = ({ product }: any) => {
-  console.log(product);
-
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const addToCartHandler = () => {

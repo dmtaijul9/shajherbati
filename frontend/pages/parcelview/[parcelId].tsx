@@ -20,7 +20,7 @@ const singleParcelViewScreen = () => {
   const {
     query: { parcelId },
   } = router;
-  console.log(parcelId);
+
   const { data, loading, error } = useQuery(SINGLE_PARCEL_QUERY, {
     variables: { id: parcelId },
   });
@@ -28,7 +28,6 @@ const singleParcelViewScreen = () => {
   const { handleChange, inputs } = useForm({
     parcelStatus: data?.parcel.status || "",
   });
-  console.log(data);
 
   const total = data?.parcel.items
     .map((item: any) => item.price * item.quantity)
@@ -37,11 +36,6 @@ const singleParcelViewScreen = () => {
   const [changeParcelMutation] = useMutation(CHANGE_PARCEL_STATUS_MUTATION);
 
   const changeParcelStatus = async () => {
-    console.log({
-      parcelId,
-      status: inputs.parcelStatus,
-    });
-
     await changeParcelMutation({
       variables: {
         parcelId,

@@ -28,7 +28,7 @@ const campaign = () => {
   };
 
   const pageCount = Math.ceil(data?.productsCount / take);
-  console.log(pageCount);
+
   return (
     <Layout title="T-Shirt">
       <section>

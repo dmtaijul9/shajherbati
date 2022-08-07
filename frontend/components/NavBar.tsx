@@ -24,7 +24,6 @@ const NavBar = () => {
   useEffect(() => {
     setCardItemsCount(cart?.cartItems.reduce((a, b) => a + b.quantity, 0));
   }, [cart?.cartItems]);
-  console.log(isNavOpen);
 
   const isNavOpenHandler = () => {
     setIsNavOpen(false);
