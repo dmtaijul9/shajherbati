@@ -34,7 +34,7 @@ export default withAuth(
       my_local_images: {
         kind: "local",
         type: "image",
-        generateUrl: (path) => `http://localhost:3000/images${path}`,
+        generateUrl: (path) => `${process.env.BACKEND_URL}/images${path}`,
         serverRoute: {
           path: "/images",
         },
@@ -44,7 +44,7 @@ export default withAuth(
     server: {
       cors: {
         credentials: true,
-        origin: ["http://localhost:7777"],
+        origin: [`${process.env.DASHBOARD_URL}`],
       },
     },
     extendGraphqlSchema: extendGraphQlSchema,

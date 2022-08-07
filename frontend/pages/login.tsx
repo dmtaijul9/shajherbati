@@ -83,9 +83,12 @@ const login = () => {
                 value={inputs.password}
               />
             </div>
-            <span className="inline-block mt-4 text-sm text-gray-700 transition duration-200 hover:text-indigo-600 hover:underline hover:cursor-pointer">
+            <a
+              href="/forgot"
+              className="inline-block mt-4 text-sm text-gray-700 transition duration-200 hover:text-indigo-600 hover:underline hover:cursor-pointer"
+            >
               forget password
-            </span>
+            </a>
             <button
               className="w-full mt-6 transition duration-300 primary-button"
               type="submit"

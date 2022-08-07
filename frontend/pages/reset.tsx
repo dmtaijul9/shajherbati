@@ -49,25 +49,12 @@ const reset = () => {
             onSubmit={handleSubmit}
           >
             <h1 className="pb-5 text-lg font-bold text-center">
-              Forgot Password
+              Reset Password
             </h1>
+            <p className="pb-2 text-center">
+              Please enter your new password and confirm it
+            </p>
 
-            <div className="mb-6">
-              <label
-                className="inline-block mb-2 mr-4 font-bold text-gray-700"
-                htmlFor="name"
-              >
-                Email
-              </label>
-              <input
-                type="text"
-                className="w-full px-4 py-2 bg-gray-100 border rounded outline-none focus:ring-2 focus:ring-indigo-400"
-                placeholder="Email"
-                name="email"
-                onChange={handleChange}
-                value={inputs.email}
-              />
-            </div>
             <div className="">
               <label
                 className="inline-block mb-2 mr-4 font-bold text-gray-700"
@@ -89,7 +76,7 @@ const reset = () => {
                 className="inline-block mb-2 mr-4 font-bold text-gray-700"
                 htmlFor="name"
               >
-                Password
+                Confirm Password
               </label>
               <input
                 type="password"
@@ -105,7 +92,7 @@ const reset = () => {
               className="w-full mt-3 transition duration-300 primary-button"
               type="submit"
             >
-              Send instruction
+              Reset Password
             </button>
           </form>
         </div>
