@@ -25,15 +25,11 @@ const shipping = () => {
   const { shippingAddress } = cart;
 
   const { inputs, handleChange, clearForm, resetForm } = useForm({
-    fullName: shippingAddress?.fullName ? shippingAddress?.fullName : "",
-    address: shippingAddress?.address ? shippingAddress?.address : "",
-    phoneNumber: shippingAddress?.phoneNumber
-      ? shippingAddress?.phoneNumber
-      : "",
-    sellPrice: shippingAddress?.sellPrice ? shippingAddress?.sellPrice : "",
-    deliveryCharge: shippingAddress?.deliveryCharge
-      ? shippingAddress?.deliveryCharge
-      : "",
+    fullName: "",
+    address: "",
+    phoneNumber: "",
+    sellPrice: "",
+    deliveryCharge: "",
   });
 
   console.log(state);

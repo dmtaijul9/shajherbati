@@ -70,3 +70,20 @@ export const QUERY_PRODUCT_PANJABI = gql`
     }
   }
 `;
+
+export const QUERY_PRODUCT_TSHIRT = gql`
+  query {
+    products(where: { category: { equals: "tShirt" } }, take: 4, skip: 0) {
+      id
+      name
+      category
+      productImg {
+        image {
+          url
+        }
+      }
+      brand
+      price
+    }
+  }
+`;

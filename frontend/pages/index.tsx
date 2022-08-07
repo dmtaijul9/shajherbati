@@ -4,9 +4,11 @@ import { useQuery } from "@apollo/client";
 import FaciCard from "../components/FaciCard";
 import NavBar from "../components/NavBar";
 import ProductItem from "../components/ProductItem";
+import ShowCase from "../components/ShowCase";
 
 import {
   QUERY_PRODUCT_PANJABI,
+  QUERY_PRODUCT_TSHIRT,
   QUERY_PRODUCT_WOMENS_FASHION,
 } from "../resolvers/product/query";
 
@@ -17,67 +19,44 @@ export default function Home({ products }: any) {
     error,
   } = useQuery(QUERY_PRODUCT_WOMENS_FASHION);
   const { data: panjabi } = useQuery(QUERY_PRODUCT_PANJABI);
-  //const { data: panjabi, loading, error } = useQuery(QUERY_PRODUCT_PANJABI);
+  const { data: tShirt } = useQuery(QUERY_PRODUCT_TSHIRT);
 
   return (
     <section>
       <NavBar />
       <div className="pb-10">
         <img
-          src="/img/home-banner.jpg"
+          src="/img/hero.jpg"
           alt="home baner "
-          className="w-full h-auto"
+          className="w-full max-h-[600px]"
         />
       </div>
-      <div id="campaign"></div>
-      <div id="womensFashion" className="px-2 py-10 ">
-        <div className="container m-auto">
-          <div className="mb-10 text-center ">
-            <h1 className="text-2xl font-bold uppercase">Women's Fashion</h1>
-          </div>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 ">
-            {womenFashion?.products.map((product, index) => {
-              return <ProductItem product={product} key={index} />;
-            })}
-          </div>
-          <div className="mt-10 text-center">
-            {" "}
-            <button className="primary-button">Load More</button>
-          </div>
-        </div>
-      </div>
-      <div id="panjabi" className="px-2 py-20 bg-gray-200 ">
-        <div className="container m-auto">
-          <div className="mb-10 text-center ">
-            <h1 className="text-2xl font-bold uppercase">Panjabi</h1>
-          </div>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 ">
-            {panjabi?.products.map((product, index) => {
-              return <ProductItem product={product} key={index} />;
-            })}
-          </div>
-          <div className="mt-10 text-center">
-            {" "}
-            <button className="primary-button">Load More</button>
-          </div>
-        </div>
-      </div>
-      <div id="tShirt" className="px-2 py-20 ">
-        <div className="container m-auto">
-          <div className="mb-10 text-center ">
-            <h1 className="text-2xl font-bold uppercase">T-Shirt</h1>
-          </div>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 ">
-            {panjabi?.products.map((product, index) => {
-              return <ProductItem product={product} key={index} />;
-            })}
-          </div>
-          <div className="mt-10 text-center">
-            {" "}
-            <button className="primary-button">Load More</button>
-          </div>
-        </div>
-      </div>
+
+      {womenFashion?.products.length !== 0 && (
+        <ShowCase
+          products={womenFashion?.products}
+          category="Womens Fashion"
+          color={false}
+          hrefLink="womens-fashion"
+        />
+      )}
+      {panjabi?.products.length !== 0 && (
+        <ShowCase
+          products={panjabi?.products}
+          category="Panjabi"
+          color={true}
+          hrefLink="panjabi"
+        />
+      )}
+      {tShirt?.products.length !== 0 && (
+        <ShowCase
+          products={tShirt?.products}
+          category="T-Shirt"
+          color={false}
+          hrefLink="t-shirt"
+        />
+      )}
+
       <div id="facilities" className="px-5 py-20 bg-amber-400">
         <div className="container m-auto">
           <div className="flex flex-wrap items-center justify-around space-x-2 space-y-2">
