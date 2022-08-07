@@ -16,7 +16,8 @@ export const useForm = (initial: any = {}) => {
     if (type === "file") {
       console.log(e);
 
-      [value] = e.target.files;
+      value = e.target.files[0];
+      console.log(value);
     }
     setInputs({ ...inputs, [name]: value });
   };

@@ -25,7 +25,6 @@ export const user = list({
     // Make sure you read the docs to understand how they work: https://keystonejs.com/docs/guides/relationships#understanding-relationships
     products: relationship({ ref: "Product.user", many: true }),
     parcel: relationship({ ref: "Parcel.user", many: true }),
-    cartItem: relationship({ ref: "CartItem.user", many: true }),
     userType: select({
       options: [
         { label: "Admin", value: "admin" },

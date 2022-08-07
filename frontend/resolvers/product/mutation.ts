@@ -8,7 +8,7 @@ export const CREATE_PRODUCT_MUTATION = gql`
     $brand: String
     $countInStock: Float!
     $description: String!
-    $productImg: [Upload!]
+    $productImg: Upload!
     $userId: ID!
   ) {
     createProduct(
@@ -20,7 +20,7 @@ export const CREATE_PRODUCT_MUTATION = gql`
         countInStock: $countInStock
         description: $description
         user: { connect: { id: $userId } }
-        productImg: { create: $productImg }
+        productImg: { create: [{ image: { upload: $productImg } }] }
       }
     ) {
       category

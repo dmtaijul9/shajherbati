@@ -1,5 +1,6 @@
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import Layout from "../../components/Layout";
 import { useForm } from "../../lib/hooks/useForm";
 import useUser from "../../lib/hooks/useUser";
@@ -7,7 +8,6 @@ import { CREATE_PRODUCT_MUTATION } from "../../resolvers/product/mutation";
 
 const createProduct = () => {
   const user = useUser();
-  const [productImg, setProductImg] = useState([]);
   const { clearForm, handleChange, inputs, resetForm } = useForm({
     productName: "",
     brand: "",
@@ -15,6 +15,7 @@ const createProduct = () => {
     countInStock: "",
     price: "",
     category: "",
+    productImg: "",
   });
 
   const [createProduct] = useMutation(CREATE_PRODUCT_MUTATION);
@@ -22,14 +23,21 @@ const createProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { productName, brand, description, countInStock, price, category } =
-      inputs;
+    const {
+      productName,
+      brand,
+      description,
+      countInStock,
+      price,
+      category,
+      productImg,
+    } = inputs;
 
     const variables = {
       name: productName,
       description,
-      countInStock: 15,
-      price: 2500,
+      countInStock,
+      price,
       brand,
       category,
       userId: user?.id,
@@ -37,7 +45,11 @@ const createProduct = () => {
     };
 
     const data = await createProduct({ variables });
-    console.log(data);
+
+    if (data) {
+      clearForm();
+      toast.success("Product has created");
+    }
   };
 
   return (
@@ -128,7 +140,7 @@ const createProduct = () => {
                 Stock
               </label>
               <input
-                type="text"
+                type="number"
                 className="w-full px-4 py-2 bg-gray-100 border rounded outline-none focus:ring-2 focus:ring-indigo-400"
                 placeholder="Stock"
                 name="countInStock"
@@ -144,7 +156,7 @@ const createProduct = () => {
                 Price
               </label>
               <input
-                type="text"
+                type="number"
                 className="w-full px-4 py-2 bg-gray-100 border rounded outline-none focus:ring-2 focus:ring-indigo-400"
                 placeholder="Price"
                 name="price"
@@ -162,12 +174,8 @@ const createProduct = () => {
               <input
                 className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 type="file"
-                id="formFileMultiple"
-                onChange={(e) => {
-                  const arr = e.target.files;
-                  setProductImg(arr);
-                }}
-                multiple
+                name="productImg"
+                onChange={handleChange}
               />
             </div>
 

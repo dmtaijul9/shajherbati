@@ -130,23 +130,26 @@ const singleParcelViewScreen = () => {
               </div>
             </div>
           </div>
-          {user?.userType !== "admin" &&
-          data?.parcel.status === ("pending" || "accepted") ? (
-            <div className="text-center">
-              <button
-                className="primary-button"
-                type="button"
-                onClick={cancelOrderHandler}
-              >
-                Cancel Order
-              </button>
-            </div>
-          ) : (
-            <div className="text-center">
-              <div className="primary-button">
-                You can not delete the parcel now. Becouse, the parcel already
-                out for delivery.{" "}
-              </div>
+          {user?.userType !== "admin" && (
+            <div>
+              {data?.parcel.status === ("pending" || "accepted") ? (
+                <div className="text-center">
+                  <button
+                    className="primary-button"
+                    type="button"
+                    onClick={cancelOrderHandler}
+                  >
+                    Cancel Order
+                  </button>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <div className="primary-button">
+                    You can not delete the parcel now. Becouse, the parcel
+                    already out for delivery.{" "}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>

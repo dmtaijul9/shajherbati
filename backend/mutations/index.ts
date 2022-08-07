@@ -15,6 +15,7 @@ export const extendGraphQlSchema = graphQLSchemaExtension({
       quantity: Int!
       countInStock: Int!
     }
+
     type Mutation {
       addToParcelList(
         name: String!

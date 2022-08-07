@@ -47,7 +47,6 @@ export const lists: Lists = {
   Product: product,
   Image: imgData,
   Parcel: parcel,
-  CartItem: CartItem,
   ParcelItem: parcelItem,
   Withdraw: withdraw,
 };

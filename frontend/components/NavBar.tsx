@@ -50,7 +50,7 @@ const NavBar = () => {
               <MenuIcon width={20} height={20} />{" "}
             </button>
             <Link href="/">
-              <a className="text-lg font-bold">In-style</a>
+              <a className="text-lg font-bold">Aleks Creation</a>
             </Link>
           </div>
           <div>

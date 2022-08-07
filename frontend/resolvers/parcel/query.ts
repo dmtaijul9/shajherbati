@@ -40,8 +40,14 @@ export const PARCEL_LIST_QUERY_FOR_USER = gql`
 `;
 
 export const PARCEL_LIST_QUERY_FOR_ADMIN = gql`
-  query {
-    parcels(orderBy: { createdAt: desc }) {
+  query PARCEL_LIST_QUERY_FOR_ADMIN($search: String, $skip: Int, $take: Int) {
+    parcelsCount(where: { phoneNumber: { contains: $search } })
+    parcels(
+      where: { phoneNumber: { contains: $search } }
+      skip: $skip
+      take: $take
+      orderBy: { createdAt: desc }
+    ) {
       id
       name
       phoneNumber
@@ -77,5 +83,11 @@ export const SINGLE_PARCEL_QUERY = gql`
         price
       }
     }
+  }
+`;
+
+export const PENDING_PARCEL_COUNT = gql`
+  query {
+    parcelsCount(where: { status: { equals: "pending" } })
   }
 `;

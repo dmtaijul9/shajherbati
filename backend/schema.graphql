@@ -20,13 +20,6 @@ type User {
     skip: Int! = 0
   ): [Parcel!]
   parcelCount(where: ParcelWhereInput! = {}): Int
-  cartItem(
-    where: CartItemWhereInput! = {}
-    orderBy: [CartItemOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [CartItem!]
-  cartItemCount(where: CartItemWhereInput! = {}): Int
   userType: String
   bkash: String
   fbPageName: String
@@ -59,7 +52,6 @@ input UserWhereInput {
   email: StringFilter
   products: ProductManyRelationFilter
   parcel: ParcelManyRelationFilter
-  cartItem: CartItemManyRelationFilter
   userType: StringNullableFilter
   bkash: StringFilter
   fbPageName: StringFilter
@@ -117,12 +109,6 @@ input ParcelManyRelationFilter {
   every: ParcelWhereInput
   some: ParcelWhereInput
   none: ParcelWhereInput
-}
-
-input CartItemManyRelationFilter {
-  every: CartItemWhereInput
-  some: CartItemWhereInput
-  none: CartItemWhereInput
 }
 
 input StringNullableFilter {
@@ -192,7 +178,6 @@ input UserUpdateInput {
   password: String
   products: ProductRelateToManyForUpdateInput
   parcel: ParcelRelateToManyForUpdateInput
-  cartItem: CartItemRelateToManyForUpdateInput
   userType: String
   bkash: String
   fbPageName: String
@@ -215,13 +200,6 @@ input ParcelRelateToManyForUpdateInput {
   connect: [ParcelWhereUniqueInput!]
 }
 
-input CartItemRelateToManyForUpdateInput {
-  disconnect: [CartItemWhereUniqueInput!]
-  set: [CartItemWhereUniqueInput!]
-  create: [CartItemCreateInput!]
-  connect: [CartItemWhereUniqueInput!]
-}
-
 input WithdrawRelateToManyForUpdateInput {
   disconnect: [WithdrawWhereUniqueInput!]
   set: [WithdrawWhereUniqueInput!]
@@ -240,7 +218,6 @@ input UserCreateInput {
   password: String
   products: ProductRelateToManyForCreateInput
   parcel: ParcelRelateToManyForCreateInput
-  cartItem: CartItemRelateToManyForCreateInput
   userType: String
   bkash: String
   fbPageName: String
@@ -257,11 +234,6 @@ input ProductRelateToManyForCreateInput {
 input ParcelRelateToManyForCreateInput {
   create: [ParcelCreateInput!]
   connect: [ParcelWhereUniqueInput!]
-}
-
-input CartItemRelateToManyForCreateInput {
-  create: [CartItemCreateInput!]
-  connect: [CartItemWhereUniqueInput!]
 }
 
 input WithdrawRelateToManyForCreateInput {
@@ -562,71 +534,6 @@ input ParcelItemRelateToManyForCreateInput {
   connect: [ParcelItemWhereUniqueInput!]
 }
 
-type CartItem {
-  id: ID!
-  quantity: Int
-  product: Product
-  user: User
-}
-
-input CartItemWhereUniqueInput {
-  id: ID
-}
-
-input CartItemWhereInput {
-  AND: [CartItemWhereInput!]
-  OR: [CartItemWhereInput!]
-  NOT: [CartItemWhereInput!]
-  id: IDFilter
-  quantity: IntFilter
-  product: ProductWhereInput
-  user: UserWhereInput
-}
-
-input IntFilter {
-  equals: Int
-  in: [Int!]
-  notIn: [Int!]
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: IntFilter
-}
-
-input CartItemOrderByInput {
-  id: OrderDirection
-  quantity: OrderDirection
-}
-
-input CartItemUpdateInput {
-  quantity: Int
-  product: ProductRelateToOneForUpdateInput
-  user: UserRelateToOneForUpdateInput
-}
-
-input ProductRelateToOneForUpdateInput {
-  create: ProductCreateInput
-  connect: ProductWhereUniqueInput
-  disconnect: Boolean
-}
-
-input CartItemUpdateArgs {
-  where: CartItemWhereUniqueInput!
-  data: CartItemUpdateInput!
-}
-
-input CartItemCreateInput {
-  quantity: Int
-  product: ProductRelateToOneForCreateInput
-  user: UserRelateToOneForCreateInput
-}
-
-input ProductRelateToOneForCreateInput {
-  create: ProductCreateInput
-  connect: ProductWhereUniqueInput
-}
-
 type ParcelItem {
   id: ID!
   name: String
@@ -787,15 +694,6 @@ type Mutation {
   updateParcels(data: [ParcelUpdateArgs!]!): [Parcel]
   deleteParcel(where: ParcelWhereUniqueInput!): Parcel
   deleteParcels(where: [ParcelWhereUniqueInput!]!): [Parcel]
-  createCartItem(data: CartItemCreateInput!): CartItem
-  createCartItems(data: [CartItemCreateInput!]!): [CartItem]
-  updateCartItem(
-    where: CartItemWhereUniqueInput!
-    data: CartItemUpdateInput!
-  ): CartItem
-  updateCartItems(data: [CartItemUpdateArgs!]!): [CartItem]
-  deleteCartItem(where: CartItemWhereUniqueInput!): CartItem
-  deleteCartItems(where: [CartItemWhereUniqueInput!]!): [CartItem]
   createParcelItem(data: ParcelItemCreateInput!): ParcelItem
   createParcelItems(data: [ParcelItemCreateInput!]!): [ParcelItem]
   updateParcelItem(
@@ -887,14 +785,6 @@ type Query {
   ): [Parcel!]
   parcel(where: ParcelWhereUniqueInput!): Parcel
   parcelsCount(where: ParcelWhereInput! = {}): Int
-  cartItems(
-    where: CartItemWhereInput! = {}
-    orderBy: [CartItemOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [CartItem!]
-  cartItem(where: CartItemWhereUniqueInput!): CartItem
-  cartItemsCount(where: CartItemWhereInput! = {}): Int
   parcelItems(
     where: ParcelItemWhereInput! = {}
     orderBy: [ParcelItemOrderByInput!]! = []

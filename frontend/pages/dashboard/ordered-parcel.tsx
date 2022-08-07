@@ -1,23 +1,39 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useQuery } from "@apollo/client";
+import { SearchIcon } from "@heroicons/react/outline";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import Pagination from "../../components/Pagination";
+import { getParcelListAdmin } from "../../lib/getDataFromApi";
+import { useForm } from "../../lib/hooks/useForm";
 import useUser from "../../lib/hooks/useUser";
-import { PARCEL_LIST_QUERY_FOR_ADMIN } from "../../resolvers/parcel/query";
+import { PENDING_PARCEL_COUNT } from "../../resolvers/parcel/query";
 
 const orderedParcelScreen = () => {
   const [skip, setSkip] = useState(0);
   const [page, setPage] = useState(1);
   const [take, setTake] = useState(10);
+  const [search, setSearch] = useState("");
 
   const user = useUser();
   const router = useRouter();
 
-  const { data, loading, error } = useQuery(PARCEL_LIST_QUERY_FOR_ADMIN);
+  const { inputs, handleChange } = useForm({
+    search: "",
+  });
 
-  const pageCount = Math.ceil(data?.withdrawsCount / take);
+  const { data, loading, error } = getParcelListAdmin(take, skip, search);
+
+  const { data: PendingCount } = useQuery(PENDING_PARCEL_COUNT);
+
+  const pageCount = Math.ceil(data?.parcelsCount / take);
+  console.log(data);
+
+  const handleSubmit = () => {
+    setSearch(inputs.search);
+  };
 
   if (user?.userType !== "admin") {
     return (
@@ -26,15 +42,6 @@ const orderedParcelScreen = () => {
       </Layout>
     );
   }
-
-  const pendingParcel = data?.parcels.filter(
-    (item) => item.status === "pending"
-  );
-
-  const parcelOnProcessing = data?.parcels.filter(
-    (item) => item.status !== ("pending" || "paymentDelivered")
-  );
-  console.log(parcelOnProcessing);
 
   return (
     <Layout title="ordered parcel list">
@@ -46,30 +53,42 @@ const orderedParcelScreen = () => {
               <div className="flex justify-between mb-2 font-bold text-center">
                 <div>New Parcel Requested</div>
                 <div className="px-4 text-white bg-red-600 rounded-md">
-                  {pendingParcel?.length}
+                  {PendingCount?.parcelsCount}
                 </div>
-              </div>
-              <div className="px-4 py-2 mb-2 text-center rounded shadow outline-none bg-amber-300">
-                <div>See All List</div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="p-5 card w-80">
-              <div className="flex justify-between mb-2 font-bold text-center">
-                <div>Parcel On Proccessing</div>
-                <div className="px-4 text-white bg-red-600 rounded-md">
-                  {parcelOnProcessing?.length}
-                </div>
-              </div>
-              <div className="px-4 py-2 mb-2 text-center rounded shadow outline-none bg-amber-300">
-                <div>See All List</div>
               </div>
             </div>
           </div>
         </div>
-        <div className="pb-4 mb-5 text-2xl font-bold text-center border-b-2 border-amber-400">
-          <h1>Withdraw History</h1>
+        <div className="flex flex-wrap items-center justify-between pb-4 mb-5 text-2xl font-bold border-b-2 border-amber-400">
+          <div>
+            {" "}
+            <h1>Ordered Parcel</h1>
+          </div>
+
+          <div className="flex justify-center">
+            <div className="xl:w-96">
+              <div className="relative flex items-stretch w-full input-group">
+                <input
+                  type="search"
+                  className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-amber-400 focus:outline-none"
+                  placeholder="Search"
+                  aria-label="Search"
+                  aria-describedby="button-addon2"
+                  name="search"
+                  value={inputs.search}
+                  onChange={handleChange}
+                />
+                <button
+                  className="btn inline-block px-6 py-2.5 bg-amber-400 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-amber-500 hover:shadow-lg focus:bg-amber-500  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-amber-600 active:shadow-lg transition duration-150 ease-in-out flex items-center"
+                  type="button"
+                  id="button-addon2"
+                  onClick={handleSubmit}
+                >
+                  <SearchIcon className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         <div>
           <table className="min-w-full">
@@ -92,7 +111,7 @@ const orderedParcelScreen = () => {
                     router.push(`/parcelview/${item.id}`);
                   }}
                 >
-                  <td>{item.name}</td>
+                  <td className="p-5 text-left">{item.name}</td>
                   <td className="p-5 text-center">{item.phoneNumber}</td>
                   <td className="p-5 text-center">{item.status}</td>
                   <td className="p-5 text-center">
@@ -123,3 +142,13 @@ const orderedParcelScreen = () => {
 };
 
 export default orderedParcelScreen;
+function setSearch(search: any) {
+  throw new Error("Function not implemented.");
+}
+function ugetParcelListAdmin(
+  take: number,
+  skip: number,
+  search: string
+): { data: any; loading: any; error: any } {
+  throw new Error("Function not implemented.");
+}

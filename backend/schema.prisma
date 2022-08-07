@@ -19,7 +19,6 @@ model User {
   password   String
   products   Product[]  @relation("Product_user")
   parcel     Parcel[]   @relation("Parcel_user")
-  cartItem   CartItem[] @relation("CartItem_user")
   userType   String?    @default("reseller")
   bkash      String     @default("")
   fbPageName String     @default("")
@@ -29,18 +28,17 @@ model User {
 }
 
 model Product {
-  id                    String     @id @default(cuid())
-  name                  String     @default("")
-  category              String?    @default("womensFashion")
-  price                 Float
-  brand                 String     @default("")
-  countInStock          Float
-  description           String     @default("")
-  createdAt             DateTime?  @default(now())
-  user                  User?      @relation("Product_user", fields: [userId], references: [id])
-  userId                String?    @map("user")
-  productImg            Image[]    @relation("Product_productImg")
-  from_CartItem_product CartItem[] @relation("CartItem_product")
+  id           String    @id @default(cuid())
+  name         String    @default("")
+  category     String?   @default("womensFashion")
+  price        Float
+  brand        String    @default("")
+  countInStock Float
+  description  String    @default("")
+  createdAt    DateTime? @default(now())
+  user         User?     @relation("Product_user", fields: [userId], references: [id])
+  userId       String?   @map("user")
+  productImg   Image[]   @relation("Product_productImg")
 
   @@index([userId])
 }
@@ -69,18 +67,6 @@ model Parcel {
   userId         String?      @map("user")
   items          ParcelItem[] @relation("ParcelItem_parcel")
 
-  @@index([userId])
-}
-
-model CartItem {
-  id        String   @id @default(cuid())
-  quantity  Int      @default(1)
-  product   Product? @relation("CartItem_product", fields: [productId], references: [id])
-  productId String?  @map("product")
-  user      User?    @relation("CartItem_user", fields: [userId], references: [id])
-  userId    String?  @map("user")
-
-  @@index([productId])
   @@index([userId])
 }
 
