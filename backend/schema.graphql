@@ -6,13 +6,6 @@ type User {
   name: String
   email: String
   password: PasswordState
-  posts(
-    where: PostWhereInput! = {}
-    orderBy: [PostOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
   products(
     where: ProductWhereInput! = {}
     orderBy: [ProductOrderByInput!]! = []
@@ -20,11 +13,36 @@ type User {
     skip: Int! = 0
   ): [Product!]
   productsCount(where: ProductWhereInput! = {}): Int
+  parcel(
+    where: ParcelWhereInput! = {}
+    orderBy: [ParcelOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Parcel!]
+  parcelCount(where: ParcelWhereInput! = {}): Int
+  userType: String
+  bkash: String
+  fbPageName: String
+  address: String
+  paymentDue: Float
+  withdrawn(
+    where: WithdrawWhereInput! = {}
+    orderBy: [WithdrawOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Withdraw!]
+  withdrawnCount(where: WithdrawWhereInput! = {}): Int
+  passwordResetToken: PasswordState
+  passwordResetIssuedAt: DateTime
+  passwordResetRedeemedAt: DateTime
 }
 
 type PasswordState {
   isSet: Boolean!
 }
+
+scalar DateTime
+  @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 input UserWhereUniqueInput {
   id: ID
@@ -38,8 +56,17 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
-  posts: PostManyRelationFilter
   products: ProductManyRelationFilter
+  parcel: ParcelManyRelationFilter
+  userType: StringNullableFilter
+  bkash: StringFilter
+  fbPageName: StringFilter
+  address: StringFilter
+  paymentDue: FloatNullableFilter
+  withdrawn: WithdrawManyRelationFilter
+  passwordResetToken: PasswordFilter
+  passwordResetIssuedAt: DateTimeNullableFilter
+  passwordResetRedeemedAt: DateTimeNullableFilter
 }
 
 input IDFilter {
@@ -81,322 +108,16 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
-input PostManyRelationFilter {
-  every: PostWhereInput
-  some: PostWhereInput
-  none: PostWhereInput
-}
-
 input ProductManyRelationFilter {
   every: ProductWhereInput
   some: ProductWhereInput
   none: ProductWhereInput
 }
 
-input UserOrderByInput {
-  id: OrderDirection
-  name: OrderDirection
-  email: OrderDirection
-}
-
-enum OrderDirection {
-  asc
-  desc
-}
-
-input UserUpdateInput {
-  name: String
-  email: String
-  password: String
-  posts: PostRelateToManyForUpdateInput
-  products: ProductRelateToManyForUpdateInput
-}
-
-input PostRelateToManyForUpdateInput {
-  disconnect: [PostWhereUniqueInput!]
-  set: [PostWhereUniqueInput!]
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
-}
-
-input ProductRelateToManyForUpdateInput {
-  disconnect: [ProductWhereUniqueInput!]
-  set: [ProductWhereUniqueInput!]
-  create: [ProductCreateInput!]
-  connect: [ProductWhereUniqueInput!]
-}
-
-input UserUpdateArgs {
-  where: UserWhereUniqueInput!
-  data: UserUpdateInput!
-}
-
-input UserCreateInput {
-  name: String
-  email: String
-  password: String
-  posts: PostRelateToManyForCreateInput
-  products: ProductRelateToManyForCreateInput
-}
-
-input PostRelateToManyForCreateInput {
-  create: [PostCreateInput!]
-  connect: [PostWhereUniqueInput!]
-}
-
-input ProductRelateToManyForCreateInput {
-  create: [ProductCreateInput!]
-  connect: [ProductWhereUniqueInput!]
-}
-
-type Product {
-  id: ID!
-  name: String
-  slug: String
-  category: String
-  price: Float
-  brand: String
-  rating: Float
-  numReviews: Float
-  countInStock: Float
-  description: String
-  user: User
-  productImg(
-    where: ImageWhereInput! = {}
-    orderBy: [ImageOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Image!]
-  productImgCount(where: ImageWhereInput! = {}): Int
-}
-
-input ProductWhereUniqueInput {
-  id: ID
-  slug: String
-}
-
-input ProductWhereInput {
-  AND: [ProductWhereInput!]
-  OR: [ProductWhereInput!]
-  NOT: [ProductWhereInput!]
-  id: IDFilter
-  name: StringFilter
-  slug: StringFilter
-  category: StringFilter
-  price: FloatFilter
-  brand: StringFilter
-  rating: FloatNullableFilter
-  numReviews: FloatNullableFilter
-  countInStock: FloatFilter
-  description: StringFilter
-  user: UserWhereInput
-  productImg: ImageManyRelationFilter
-}
-
-input FloatFilter {
-  equals: Float
-  in: [Float!]
-  notIn: [Float!]
-  lt: Float
-  lte: Float
-  gt: Float
-  gte: Float
-  not: FloatFilter
-}
-
-input FloatNullableFilter {
-  equals: Float
-  in: [Float!]
-  notIn: [Float!]
-  lt: Float
-  lte: Float
-  gt: Float
-  gte: Float
-  not: FloatNullableFilter
-}
-
-input ImageManyRelationFilter {
-  every: ImageWhereInput
-  some: ImageWhereInput
-  none: ImageWhereInput
-}
-
-input ProductOrderByInput {
-  id: OrderDirection
-  name: OrderDirection
-  slug: OrderDirection
-  category: OrderDirection
-  price: OrderDirection
-  brand: OrderDirection
-  rating: OrderDirection
-  numReviews: OrderDirection
-  countInStock: OrderDirection
-  description: OrderDirection
-}
-
-input ProductUpdateInput {
-  name: String
-  slug: String
-  category: String
-  price: Float
-  brand: String
-  rating: Float
-  numReviews: Float
-  countInStock: Float
-  description: String
-  user: UserRelateToOneForUpdateInput
-  productImg: ImageRelateToManyForUpdateInput
-}
-
-input UserRelateToOneForUpdateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-  disconnect: Boolean
-}
-
-input ImageRelateToManyForUpdateInput {
-  disconnect: [ImageWhereUniqueInput!]
-  set: [ImageWhereUniqueInput!]
-  create: [ImageCreateInput!]
-  connect: [ImageWhereUniqueInput!]
-}
-
-input ProductUpdateArgs {
-  where: ProductWhereUniqueInput!
-  data: ProductUpdateInput!
-}
-
-input ProductCreateInput {
-  name: String
-  slug: String
-  category: String
-  price: Float
-  brand: String
-  rating: Float
-  numReviews: Float
-  countInStock: Float
-  description: String
-  user: UserRelateToOneForCreateInput
-  productImg: ImageRelateToManyForCreateInput
-}
-
-input UserRelateToOneForCreateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-}
-
-input ImageRelateToManyForCreateInput {
-  create: [ImageCreateInput!]
-  connect: [ImageWhereUniqueInput!]
-}
-
-type Image {
-  id: ID!
-  name: String
-  altText: String
-  image: ImageFieldOutput
-}
-
-type ImageFieldOutput {
-  id: ID!
-  filesize: Int!
-  width: Int!
-  height: Int!
-  extension: ImageExtension!
-  url: String!
-}
-
-enum ImageExtension {
-  jpg
-  png
-  webp
-  gif
-}
-
-input ImageWhereUniqueInput {
-  id: ID
-}
-
-input ImageWhereInput {
-  AND: [ImageWhereInput!]
-  OR: [ImageWhereInput!]
-  NOT: [ImageWhereInput!]
-  id: IDFilter
-  name: StringFilter
-  altText: StringFilter
-}
-
-input ImageOrderByInput {
-  id: OrderDirection
-  name: OrderDirection
-  altText: OrderDirection
-}
-
-input ImageUpdateInput {
-  name: String
-  altText: String
-  image: ImageFieldInput
-}
-
-input ImageFieldInput {
-  upload: Upload!
-}
-
-"""
-The `Upload` scalar type represents a file upload.
-"""
-scalar Upload
-
-input ImageUpdateArgs {
-  where: ImageWhereUniqueInput!
-  data: ImageUpdateInput!
-}
-
-input ImageCreateInput {
-  name: String
-  altText: String
-  image: ImageFieldInput
-}
-
-type Parcel {
-  id: ID!
-  name: String
-  address: String
-  phoneNumber: String
-  sellPrice: Float
-  resellerPrice: Float
-  deliveryCharge: Float
-  shippingMethod: String
-  quantity: Float
-  status: String
-  orderedProduct(
-    where: ProductWhereInput! = {}
-    orderBy: [ProductOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Product!]
-  orderedProductCount(where: ProductWhereInput! = {}): Int
-}
-
-input ParcelWhereUniqueInput {
-  id: ID
-}
-
-input ParcelWhereInput {
-  AND: [ParcelWhereInput!]
-  OR: [ParcelWhereInput!]
-  NOT: [ParcelWhereInput!]
-  id: IDFilter
-  name: StringFilter
-  address: StringFilter
-  phoneNumber: StringFilter
-  sellPrice: FloatFilter
-  resellerPrice: FloatFilter
-  deliveryCharge: FloatFilter
-  shippingMethod: StringFilter
-  quantity: FloatFilter
-  status: StringNullableFilter
-  orderedProduct: ProductManyRelationFilter
+input ParcelManyRelationFilter {
+  every: ParcelWhereInput
+  some: ParcelWhereInput
+  none: ParcelWhereInput
 }
 
 input StringNullableFilter {
@@ -427,87 +148,25 @@ input NestedStringNullableFilter {
   not: NestedStringNullableFilter
 }
 
-input ParcelOrderByInput {
-  id: OrderDirection
-  name: OrderDirection
-  address: OrderDirection
-  phoneNumber: OrderDirection
-  sellPrice: OrderDirection
-  resellerPrice: OrderDirection
-  deliveryCharge: OrderDirection
-  shippingMethod: OrderDirection
-  quantity: OrderDirection
-  status: OrderDirection
+input FloatNullableFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatNullableFilter
 }
 
-input ParcelUpdateInput {
-  name: String
-  address: String
-  phoneNumber: String
-  sellPrice: Float
-  resellerPrice: Float
-  deliveryCharge: Float
-  shippingMethod: String
-  quantity: Float
-  status: String
-  orderedProduct: ProductRelateToManyForUpdateInput
+input WithdrawManyRelationFilter {
+  every: WithdrawWhereInput
+  some: WithdrawWhereInput
+  none: WithdrawWhereInput
 }
 
-input ParcelUpdateArgs {
-  where: ParcelWhereUniqueInput!
-  data: ParcelUpdateInput!
-}
-
-input ParcelCreateInput {
-  name: String
-  address: String
-  phoneNumber: String
-  sellPrice: Float
-  resellerPrice: Float
-  deliveryCharge: Float
-  shippingMethod: String
-  quantity: Float
-  status: String
-  orderedProduct: ProductRelateToManyForCreateInput
-}
-
-type Post {
-  id: ID!
-  title: String
-  status: String
-  content: Post_content_Document
-  publishDate: DateTime
-  author: User
-  tags(
-    where: TagWhereInput! = {}
-    orderBy: [TagOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Tag!]
-  tagsCount(where: TagWhereInput! = {}): Int
-}
-
-type Post_content_Document {
-  document(hydrateRelationships: Boolean! = false): JSON!
-}
-
-scalar DateTime
-  @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
-
-input PostWhereUniqueInput {
-  id: ID
-}
-
-input PostWhereInput {
-  AND: [PostWhereInput!]
-  OR: [PostWhereInput!]
-  NOT: [PostWhereInput!]
-  id: IDFilter
-  title: StringFilter
-  status: StringNullableFilter
-  publishDate: DateTimeNullableFilter
-  author: UserWhereInput
-  tags: TagManyRelationFilter
+input PasswordFilter {
+  isSet: Boolean!
 }
 
 input DateTimeNullableFilter {
@@ -521,97 +180,500 @@ input DateTimeNullableFilter {
   not: DateTimeNullableFilter
 }
 
-input TagManyRelationFilter {
-  every: TagWhereInput
-  some: TagWhereInput
-  none: TagWhereInput
-}
-
-input PostOrderByInput {
+input UserOrderByInput {
   id: OrderDirection
-  title: OrderDirection
-  status: OrderDirection
-  publishDate: OrderDirection
+  name: OrderDirection
+  email: OrderDirection
+  userType: OrderDirection
+  bkash: OrderDirection
+  fbPageName: OrderDirection
+  address: OrderDirection
+  paymentDue: OrderDirection
+  passwordResetIssuedAt: OrderDirection
+  passwordResetRedeemedAt: OrderDirection
 }
 
-input PostUpdateInput {
-  title: String
-  status: String
-  content: JSON
-  publishDate: DateTime
-  author: UserRelateToOneForUpdateInput
-  tags: TagRelateToManyForUpdateInput
+enum OrderDirection {
+  asc
+  desc
 }
 
-input TagRelateToManyForUpdateInput {
-  disconnect: [TagWhereUniqueInput!]
-  set: [TagWhereUniqueInput!]
-  create: [TagCreateInput!]
-  connect: [TagWhereUniqueInput!]
+input UserUpdateInput {
+  name: String
+  email: String
+  password: String
+  products: ProductRelateToManyForUpdateInput
+  parcel: ParcelRelateToManyForUpdateInput
+  userType: String
+  bkash: String
+  fbPageName: String
+  address: String
+  paymentDue: Float
+  withdrawn: WithdrawRelateToManyForUpdateInput
+  passwordResetToken: String
+  passwordResetIssuedAt: DateTime
+  passwordResetRedeemedAt: DateTime
 }
 
-input PostUpdateArgs {
-  where: PostWhereUniqueInput!
-  data: PostUpdateInput!
+input ProductRelateToManyForUpdateInput {
+  disconnect: [ProductWhereUniqueInput!]
+  set: [ProductWhereUniqueInput!]
+  create: [ProductCreateInput!]
+  connect: [ProductWhereUniqueInput!]
 }
 
-input PostCreateInput {
-  title: String
-  status: String
-  content: JSON
-  publishDate: DateTime
-  author: UserRelateToOneForCreateInput
-  tags: TagRelateToManyForCreateInput
+input ParcelRelateToManyForUpdateInput {
+  disconnect: [ParcelWhereUniqueInput!]
+  set: [ParcelWhereUniqueInput!]
+  create: [ParcelCreateInput!]
+  connect: [ParcelWhereUniqueInput!]
 }
 
-input TagRelateToManyForCreateInput {
-  create: [TagCreateInput!]
-  connect: [TagWhereUniqueInput!]
+input WithdrawRelateToManyForUpdateInput {
+  disconnect: [WithdrawWhereUniqueInput!]
+  set: [WithdrawWhereUniqueInput!]
+  create: [WithdrawCreateInput!]
+  connect: [WithdrawWhereUniqueInput!]
 }
 
-type Tag {
+input UserUpdateArgs {
+  where: UserWhereUniqueInput!
+  data: UserUpdateInput!
+}
+
+input UserCreateInput {
+  name: String
+  email: String
+  password: String
+  products: ProductRelateToManyForCreateInput
+  parcel: ParcelRelateToManyForCreateInput
+  userType: String
+  bkash: String
+  fbPageName: String
+  address: String
+  paymentDue: Float
+  withdrawn: WithdrawRelateToManyForCreateInput
+  passwordResetToken: String
+  passwordResetIssuedAt: DateTime
+  passwordResetRedeemedAt: DateTime
+}
+
+input ProductRelateToManyForCreateInput {
+  create: [ProductCreateInput!]
+  connect: [ProductWhereUniqueInput!]
+}
+
+input ParcelRelateToManyForCreateInput {
+  create: [ParcelCreateInput!]
+  connect: [ParcelWhereUniqueInput!]
+}
+
+input WithdrawRelateToManyForCreateInput {
+  create: [WithdrawCreateInput!]
+  connect: [WithdrawWhereUniqueInput!]
+}
+
+type Product {
   id: ID!
   name: String
-  posts(
-    where: PostWhereInput! = {}
-    orderBy: [PostOrderByInput!]! = []
+  category: String
+  price: Float
+  brand: String
+  countInStock: Float
+  description: String
+  createdAt: DateTime
+  user: User
+  productImg(
+    where: ImageWhereInput! = {}
+    orderBy: [ImageOrderByInput!]! = []
     take: Int
     skip: Int! = 0
-  ): [Post!]
-  postsCount(where: PostWhereInput! = {}): Int
+  ): [Image!]
+  productImgCount(where: ImageWhereInput! = {}): Int
 }
 
-input TagWhereUniqueInput {
+input ProductWhereUniqueInput {
   id: ID
 }
 
-input TagWhereInput {
-  AND: [TagWhereInput!]
-  OR: [TagWhereInput!]
-  NOT: [TagWhereInput!]
+input ProductWhereInput {
+  AND: [ProductWhereInput!]
+  OR: [ProductWhereInput!]
+  NOT: [ProductWhereInput!]
   id: IDFilter
   name: StringFilter
-  posts: PostManyRelationFilter
+  category: StringNullableFilter
+  price: FloatFilter
+  brand: StringFilter
+  countInStock: FloatFilter
+  description: StringFilter
+  createdAt: DateTimeNullableFilter
+  user: UserWhereInput
+  productImg: ImageManyRelationFilter
 }
 
-input TagOrderByInput {
+input FloatFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatFilter
+}
+
+input ImageManyRelationFilter {
+  every: ImageWhereInput
+  some: ImageWhereInput
+  none: ImageWhereInput
+}
+
+input ProductOrderByInput {
   id: OrderDirection
   name: OrderDirection
+  category: OrderDirection
+  price: OrderDirection
+  brand: OrderDirection
+  countInStock: OrderDirection
+  description: OrderDirection
+  createdAt: OrderDirection
 }
 
-input TagUpdateInput {
+input ProductUpdateInput {
   name: String
-  posts: PostRelateToManyForUpdateInput
+  category: String
+  price: Float
+  brand: String
+  countInStock: Float
+  description: String
+  createdAt: DateTime
+  user: UserRelateToOneForUpdateInput
+  productImg: ImageRelateToManyForUpdateInput
 }
 
-input TagUpdateArgs {
-  where: TagWhereUniqueInput!
-  data: TagUpdateInput!
+input UserRelateToOneForUpdateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
 }
 
-input TagCreateInput {
+input ImageRelateToManyForUpdateInput {
+  disconnect: [ImageWhereUniqueInput!]
+  set: [ImageWhereUniqueInput!]
+  create: [ImageCreateInput!]
+  connect: [ImageWhereUniqueInput!]
+}
+
+input ProductUpdateArgs {
+  where: ProductWhereUniqueInput!
+  data: ProductUpdateInput!
+}
+
+input ProductCreateInput {
   name: String
-  posts: PostRelateToManyForCreateInput
+  category: String
+  price: Float
+  brand: String
+  countInStock: Float
+  description: String
+  createdAt: DateTime
+  user: UserRelateToOneForCreateInput
+  productImg: ImageRelateToManyForCreateInput
+}
+
+input UserRelateToOneForCreateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+input ImageRelateToManyForCreateInput {
+  create: [ImageCreateInput!]
+  connect: [ImageWhereUniqueInput!]
+}
+
+type Image {
+  id: ID!
+  image: ImageFieldOutput
+}
+
+type ImageFieldOutput {
+  id: ID!
+  filesize: Int!
+  width: Int!
+  height: Int!
+  extension: ImageExtension!
+  url: String!
+}
+
+enum ImageExtension {
+  jpg
+  png
+  webp
+  gif
+}
+
+input ImageWhereUniqueInput {
+  id: ID
+}
+
+input ImageWhereInput {
+  AND: [ImageWhereInput!]
+  OR: [ImageWhereInput!]
+  NOT: [ImageWhereInput!]
+  id: IDFilter
+}
+
+input ImageOrderByInput {
+  id: OrderDirection
+}
+
+input ImageUpdateInput {
+  image: ImageFieldInput
+}
+
+input ImageFieldInput {
+  upload: Upload!
+}
+
+"""
+The `Upload` scalar type represents a file upload.
+"""
+scalar Upload
+
+input ImageUpdateArgs {
+  where: ImageWhereUniqueInput!
+  data: ImageUpdateInput!
+}
+
+input ImageCreateInput {
+  image: ImageFieldInput
+}
+
+type Parcel {
+  id: ID!
+  name: String
+  address: String
+  phoneNumber: String
+  sellPrice: Float
+  deliveryCharge: Float
+  createdAt: DateTime
+  shippingMethod: String
+  status: String
+  user: User
+  items(
+    where: ParcelItemWhereInput! = {}
+    orderBy: [ParcelItemOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [ParcelItem!]
+  itemsCount(where: ParcelItemWhereInput! = {}): Int
+}
+
+input ParcelWhereUniqueInput {
+  id: ID
+}
+
+input ParcelWhereInput {
+  AND: [ParcelWhereInput!]
+  OR: [ParcelWhereInput!]
+  NOT: [ParcelWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  address: StringFilter
+  phoneNumber: StringFilter
+  sellPrice: FloatFilter
+  deliveryCharge: FloatFilter
+  createdAt: DateTimeNullableFilter
+  shippingMethod: StringNullableFilter
+  status: StringNullableFilter
+  user: UserWhereInput
+  items: ParcelItemManyRelationFilter
+}
+
+input ParcelItemManyRelationFilter {
+  every: ParcelItemWhereInput
+  some: ParcelItemWhereInput
+  none: ParcelItemWhereInput
+}
+
+input ParcelOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  address: OrderDirection
+  phoneNumber: OrderDirection
+  sellPrice: OrderDirection
+  deliveryCharge: OrderDirection
+  createdAt: OrderDirection
+  shippingMethod: OrderDirection
+  status: OrderDirection
+}
+
+input ParcelUpdateInput {
+  name: String
+  address: String
+  phoneNumber: String
+  sellPrice: Float
+  deliveryCharge: Float
+  createdAt: DateTime
+  shippingMethod: String
+  status: String
+  user: UserRelateToOneForUpdateInput
+  items: ParcelItemRelateToManyForUpdateInput
+}
+
+input ParcelItemRelateToManyForUpdateInput {
+  disconnect: [ParcelItemWhereUniqueInput!]
+  set: [ParcelItemWhereUniqueInput!]
+  create: [ParcelItemCreateInput!]
+  connect: [ParcelItemWhereUniqueInput!]
+}
+
+input ParcelUpdateArgs {
+  where: ParcelWhereUniqueInput!
+  data: ParcelUpdateInput!
+}
+
+input ParcelCreateInput {
+  name: String
+  address: String
+  phoneNumber: String
+  sellPrice: Float
+  deliveryCharge: Float
+  createdAt: DateTime
+  shippingMethod: String
+  status: String
+  user: UserRelateToOneForCreateInput
+  items: ParcelItemRelateToManyForCreateInput
+}
+
+input ParcelItemRelateToManyForCreateInput {
+  create: [ParcelItemCreateInput!]
+  connect: [ParcelItemWhereUniqueInput!]
+}
+
+type ParcelItem {
+  id: ID!
+  name: String
+  imageUrl: String
+  price: Float
+  quantity: Float
+  parcel: Parcel
+}
+
+input ParcelItemWhereUniqueInput {
+  id: ID
+}
+
+input ParcelItemWhereInput {
+  AND: [ParcelItemWhereInput!]
+  OR: [ParcelItemWhereInput!]
+  NOT: [ParcelItemWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  imageUrl: StringFilter
+  price: FloatFilter
+  quantity: FloatFilter
+  parcel: ParcelWhereInput
+}
+
+input ParcelItemOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  imageUrl: OrderDirection
+  price: OrderDirection
+  quantity: OrderDirection
+}
+
+input ParcelItemUpdateInput {
+  name: String
+  imageUrl: String
+  price: Float
+  quantity: Float
+  parcel: ParcelRelateToOneForUpdateInput
+}
+
+input ParcelRelateToOneForUpdateInput {
+  create: ParcelCreateInput
+  connect: ParcelWhereUniqueInput
+  disconnect: Boolean
+}
+
+input ParcelItemUpdateArgs {
+  where: ParcelItemWhereUniqueInput!
+  data: ParcelItemUpdateInput!
+}
+
+input ParcelItemCreateInput {
+  name: String
+  imageUrl: String
+  price: Float
+  quantity: Float
+  parcel: ParcelRelateToOneForCreateInput
+}
+
+input ParcelRelateToOneForCreateInput {
+  create: ParcelCreateInput
+  connect: ParcelWhereUniqueInput
+}
+
+type Withdraw {
+  id: ID!
+  amount: Float
+  bkashNumber: String
+  status: String
+  time: DateTime
+  transationID: String
+  user: User
+}
+
+input WithdrawWhereUniqueInput {
+  id: ID
+}
+
+input WithdrawWhereInput {
+  AND: [WithdrawWhereInput!]
+  OR: [WithdrawWhereInput!]
+  NOT: [WithdrawWhereInput!]
+  id: IDFilter
+  amount: FloatFilter
+  bkashNumber: StringFilter
+  status: StringNullableFilter
+  time: DateTimeNullableFilter
+  transationID: StringFilter
+  user: UserWhereInput
+}
+
+input WithdrawOrderByInput {
+  id: OrderDirection
+  amount: OrderDirection
+  bkashNumber: OrderDirection
+  status: OrderDirection
+  time: OrderDirection
+  transationID: OrderDirection
+}
+
+input WithdrawUpdateInput {
+  amount: Float
+  bkashNumber: String
+  status: String
+  time: DateTime
+  transationID: String
+  user: UserRelateToOneForUpdateInput
+}
+
+input WithdrawUpdateArgs {
+  where: WithdrawWhereUniqueInput!
+  data: WithdrawUpdateInput!
+}
+
+input WithdrawCreateInput {
+  amount: Float
+  bkashNumber: String
+  status: String
+  time: DateTime
+  transationID: String
+  user: UserRelateToOneForCreateInput
 }
 
 """
@@ -650,18 +712,24 @@ type Mutation {
   updateParcels(data: [ParcelUpdateArgs!]!): [Parcel]
   deleteParcel(where: ParcelWhereUniqueInput!): Parcel
   deleteParcels(where: [ParcelWhereUniqueInput!]!): [Parcel]
-  createPost(data: PostCreateInput!): Post
-  createPosts(data: [PostCreateInput!]!): [Post]
-  updatePost(where: PostWhereUniqueInput!, data: PostUpdateInput!): Post
-  updatePosts(data: [PostUpdateArgs!]!): [Post]
-  deletePost(where: PostWhereUniqueInput!): Post
-  deletePosts(where: [PostWhereUniqueInput!]!): [Post]
-  createTag(data: TagCreateInput!): Tag
-  createTags(data: [TagCreateInput!]!): [Tag]
-  updateTag(where: TagWhereUniqueInput!, data: TagUpdateInput!): Tag
-  updateTags(data: [TagUpdateArgs!]!): [Tag]
-  deleteTag(where: TagWhereUniqueInput!): Tag
-  deleteTags(where: [TagWhereUniqueInput!]!): [Tag]
+  createParcelItem(data: ParcelItemCreateInput!): ParcelItem
+  createParcelItems(data: [ParcelItemCreateInput!]!): [ParcelItem]
+  updateParcelItem(
+    where: ParcelItemWhereUniqueInput!
+    data: ParcelItemUpdateInput!
+  ): ParcelItem
+  updateParcelItems(data: [ParcelItemUpdateArgs!]!): [ParcelItem]
+  deleteParcelItem(where: ParcelItemWhereUniqueInput!): ParcelItem
+  deleteParcelItems(where: [ParcelItemWhereUniqueInput!]!): [ParcelItem]
+  createWithdraw(data: WithdrawCreateInput!): Withdraw
+  createWithdraws(data: [WithdrawCreateInput!]!): [Withdraw]
+  updateWithdraw(
+    where: WithdrawWhereUniqueInput!
+    data: WithdrawUpdateInput!
+  ): Withdraw
+  updateWithdraws(data: [WithdrawUpdateArgs!]!): [Withdraw]
+  deleteWithdraw(where: WithdrawWhereUniqueInput!): Withdraw
+  deleteWithdraws(where: [WithdrawWhereUniqueInput!]!): [Withdraw]
   endSession: Boolean!
   authenticateUserWithPassword(
     email: String!
@@ -670,6 +738,23 @@ type Mutation {
   createInitialUser(
     data: CreateInitialUserInput!
   ): UserAuthenticationWithPasswordSuccess!
+  sendUserPasswordResetLink(email: String!): Boolean!
+  redeemUserPasswordResetToken(
+    email: String!
+    token: String!
+    password: String!
+  ): RedeemUserPasswordResetTokenResult
+  addToParcelList(
+    name: String!
+    address: String!
+    deliveryCharge: Int!
+    phoneNumber: String!
+    sellPrice: Int!
+    shippingMethod: String!
+    parcelItems: [ProductInputForParcel!]
+  ): Parcel
+  changeParcelStatus(status: String!, parcelId: String!): Parcel
+  withdrawRequest(amount: Int!, bkashNumber: String!): Withdraw
 }
 
 union UserAuthenticationWithPasswordResult =
@@ -689,6 +774,17 @@ input CreateInitialUserInput {
   name: String
   email: String
   password: String
+}
+
+type RedeemUserPasswordResetTokenResult {
+  code: PasswordResetRedemptionErrorCode!
+  message: String!
+}
+
+enum PasswordResetRedemptionErrorCode {
+  FAILURE
+  TOKEN_EXPIRED
+  TOKEN_REDEEMED
 }
 
 type Query {
@@ -724,27 +820,36 @@ type Query {
   ): [Parcel!]
   parcel(where: ParcelWhereUniqueInput!): Parcel
   parcelsCount(where: ParcelWhereInput! = {}): Int
-  posts(
-    where: PostWhereInput! = {}
-    orderBy: [PostOrderByInput!]! = []
+  parcelItems(
+    where: ParcelItemWhereInput! = {}
+    orderBy: [ParcelItemOrderByInput!]! = []
     take: Int
     skip: Int! = 0
-  ): [Post!]
-  post(where: PostWhereUniqueInput!): Post
-  postsCount(where: PostWhereInput! = {}): Int
-  tags(
-    where: TagWhereInput! = {}
-    orderBy: [TagOrderByInput!]! = []
+  ): [ParcelItem!]
+  parcelItem(where: ParcelItemWhereUniqueInput!): ParcelItem
+  parcelItemsCount(where: ParcelItemWhereInput! = {}): Int
+  withdraws(
+    where: WithdrawWhereInput! = {}
+    orderBy: [WithdrawOrderByInput!]! = []
     take: Int
     skip: Int! = 0
-  ): [Tag!]
-  tag(where: TagWhereUniqueInput!): Tag
-  tagsCount(where: TagWhereInput! = {}): Int
+  ): [Withdraw!]
+  withdraw(where: WithdrawWhereUniqueInput!): Withdraw
+  withdrawsCount(where: WithdrawWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
+  validateUserPasswordResetToken(
+    email: String!
+    token: String!
+  ): ValidateUserPasswordResetTokenResult
 }
 
 union AuthenticatedItem = User
+
+type ValidateUserPasswordResetTokenResult {
+  code: PasswordResetRedemptionErrorCode!
+  message: String!
+}
 
 type KeystoneMeta {
   adminMeta: KeystoneAdminMeta!
@@ -832,4 +937,13 @@ type KeystoneAdminUISort {
 enum KeystoneAdminUISortDirection {
   ASC
   DESC
+}
+
+input ProductInputForParcel {
+  id: ID!
+  name: String!
+  imageUrl: String!
+  price: Int!
+  quantity: Int!
+  countInStock: Int!
 }

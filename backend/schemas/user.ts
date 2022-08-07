@@ -1,5 +1,11 @@
 import { list } from "@keystone-6/core";
-import { password, relationship, text } from "@keystone-6/core/fields";
+import {
+  float,
+  password,
+  relationship,
+  select,
+  text,
+} from "@keystone-6/core/fields";
 
 export const user = list({
   // Here are the fields that `User` will have. We want an email and password so they can log in
@@ -17,14 +23,26 @@ export const user = list({
     // we want a user to have many posts, and we are saying that the user
     // should be referencable by the 'author' field of posts.
     // Make sure you read the docs to understand how they work: https://keystonejs.com/docs/guides/relationships#understanding-relationships
-    posts: relationship({ ref: "Post.author", many: true }),
     products: relationship({ ref: "Product.user", many: true }),
+    parcel: relationship({ ref: "Parcel.user", many: true }),
+    userType: select({
+      options: [
+        { label: "Admin", value: "admin" },
+        { label: "Reseller", value: "reseller" },
+      ],
+      defaultValue: "reseller",
+    }),
+    bkash: text(),
+    fbPageName: text(),
+    address: text(),
+    paymentDue: float({ defaultValue: 0 }),
+    withdrawn: relationship({ ref: "Withdraw.user", many: true }),
   },
 
   // Here we can configure the Admin UI. We want to show a user's name and posts in the Admin UI
   ui: {
     listView: {
-      initialColumns: ["name", "posts"],
+      initialColumns: [],
     },
   },
 });

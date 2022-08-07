@@ -13,37 +13,41 @@ generator client {
 }
 
 model User {
-  id       String    @id @default(cuid())
-  name     String    @default("")
-  email    String    @unique @default("")
-  password String
-  posts    Post[]    @relation("Post_author")
-  products Product[] @relation("Product_user")
+  id                      String     @id @default(cuid())
+  name                    String     @default("")
+  email                   String     @unique @default("")
+  password                String
+  products                Product[]  @relation("Product_user")
+  parcel                  Parcel[]   @relation("Parcel_user")
+  userType                String?    @default("reseller")
+  bkash                   String     @default("")
+  fbPageName              String     @default("")
+  address                 String     @default("")
+  paymentDue              Float?     @default(0)
+  withdrawn               Withdraw[] @relation("Withdraw_user")
+  passwordResetToken      String?
+  passwordResetIssuedAt   DateTime?
+  passwordResetRedeemedAt DateTime?
 }
 
 model Product {
-  id                         String   @id @default(cuid())
-  name                       String   @default("")
-  slug                       String   @unique @default("")
-  category                   String   @default("")
-  price                      Float
-  brand                      String   @default("")
-  rating                     Float?   @default(0)
-  numReviews                 Float?   @default(0)
-  countInStock               Float
-  description                String   @default("")
-  user                       User?    @relation("Product_user", fields: [userId], references: [id])
-  userId                     String?  @map("user")
-  productImg                 Image[]  @relation("Product_productImg")
-  from_Parcel_orderedProduct Parcel[] @relation("Parcel_orderedProduct")
+  id           String    @id @default(cuid())
+  name         String    @default("")
+  category     String?   @default("womensFashion")
+  price        Float
+  brand        String    @default("")
+  countInStock Float
+  description  String    @default("")
+  createdAt    DateTime? @default(now())
+  user         User?     @relation("Product_user", fields: [userId], references: [id])
+  userId       String?   @map("user")
+  productImg   Image[]   @relation("Product_productImg")
 
   @@index([userId])
 }
 
 model Image {
   id                      String    @id @default(cuid())
-  name                    String    @default("")
-  altText                 String    @default("")
   image_filesize          Int?
   image_extension         String?
   image_width             Int?
@@ -53,34 +57,43 @@ model Image {
 }
 
 model Parcel {
-  id             String    @id @default(cuid())
-  name           String    @default("")
-  address        String    @default("")
-  phoneNumber    String    @default("")
+  id             String       @id @default(cuid())
+  name           String       @default("")
+  address        String       @default("")
+  phoneNumber    String       @default("")
   sellPrice      Float
-  resellerPrice  Float
   deliveryCharge Float
-  shippingMethod String    @default("")
-  quantity       Float
-  status         String?   @default("pending")
-  orderedProduct Product[] @relation("Parcel_orderedProduct")
+  createdAt      DateTime?    @default(now())
+  shippingMethod String?      @default("CashOnDelivery")
+  status         String?      @default("pending")
+  user           User?        @relation("Parcel_user", fields: [userId], references: [id])
+  userId         String?      @map("user")
+  items          ParcelItem[] @relation("ParcelItem_parcel")
+
+  @@index([userId])
 }
 
-model Post {
-  id          String    @id @default(cuid())
-  title       String    @default("")
-  status      String?   @default("draft")
-  content     String    @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  publishDate DateTime?
-  author      User?     @relation("Post_author", fields: [authorId], references: [id])
-  authorId    String?   @map("author")
-  tags        Tag[]     @relation("Post_tags")
+model ParcelItem {
+  id       String  @id @default(cuid())
+  name     String  @default("")
+  imageUrl String  @default("")
+  price    Float
+  quantity Float
+  parcel   Parcel? @relation("ParcelItem_parcel", fields: [parcelId], references: [id])
+  parcelId String? @map("parcel")
 
-  @@index([authorId])
+  @@index([parcelId])
 }
 
-model Tag {
-  id    String @id @default(cuid())
-  name  String @default("")
-  posts Post[] @relation("Post_tags")
+model Withdraw {
+  id           String    @id @default(cuid())
+  amount       Float
+  bkashNumber  String    @default("")
+  status       String?   @default("pending")
+  time         DateTime? @default(now())
+  transationID String    @default("")
+  user         User?     @relation("Withdraw_user", fields: [userId], references: [id])
+  userId       String?   @map("user")
+
+  @@index([userId])
 }

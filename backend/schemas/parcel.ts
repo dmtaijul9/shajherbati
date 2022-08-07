@@ -1,5 +1,11 @@
 import { list } from "@keystone-6/core";
-import { float, relationship, select, text } from "@keystone-6/core/fields";
+import {
+  float,
+  relationship,
+  select,
+  text,
+  timestamp,
+} from "@keystone-6/core/fields";
 
 export const parcel = list({
   // Here are the fields that `User` will have. We want an email and password so they can log in
@@ -9,10 +15,20 @@ export const parcel = list({
     address: text({ validation: { isRequired: true } }),
     phoneNumber: text({ validation: { isRequired: true } }),
     sellPrice: float({ validation: { isRequired: true } }),
-    resellerPrice: float({ validation: { isRequired: true } }),
     deliveryCharge: float({ validation: { isRequired: true } }),
-    shippingMethod: text({ validation: { isRequired: true } }),
-    quantity: float({ validation: { isRequired: true } }),
+    createdAt: timestamp({
+      defaultValue: {
+        kind: "now",
+      },
+    }),
+    shippingMethod: select({
+      options: [
+        { label: "Sundarban", value: "Sundarban" },
+        { label: "SA Paribahan", value: "SA Paribahan" },
+        { label: "CashOnDelivery", value: "CashOnDelivery" },
+      ],
+      defaultValue: "CashOnDelivery",
+    }),
     status: select({
       options: [
         { label: "Parcel Pending", value: "pending" },
@@ -26,10 +42,8 @@ export const parcel = list({
       ],
       defaultValue: "pending",
     }),
-    orderedProduct: relationship({
-      ref: "Product",
-      many: true,
-    }),
+    user: relationship({ ref: "User.parcel", many: false }),
+    items: relationship({ ref: "ParcelItem.parcel", many: true }),
   },
   // Here we can configure the Admin UI. We want to show a user's name and posts in the Admin UI
   ui: {

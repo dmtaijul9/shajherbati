@@ -5,8 +5,20 @@ export const SIGNUP_MUTATION = gql`
     $email: String!
     $name: String!
     $password: String!
+    $bkash: String!
+    $fbPageName: String!
+    $address: String!
   ) {
-    createUser(data: { email: $email, name: $name, password: $password }) {
+    createUser(
+      data: {
+        email: $email
+        name: $name
+        password: $password
+        address: $address
+        fbPageName: $fbPageName
+        bkash: $bkash
+      }
+    ) {
       id
       email
       name
@@ -63,16 +75,22 @@ export const RESET_PASSWORD = gql`
 export const UPDATE_USER = gql`
   mutation UPDATE_USER(
     $name: String
-    $profileImg: Upload
     $password: String
+    $bkashNumber: String
+    $fbPageName: String
+    $email: String
+    $address: String
     $id: ID!
   ) {
     updateUser(
       where: { id: $id }
       data: {
         name: $name
-        profileImg: { upload: $profileImg }
         password: $password
+        email: $email
+        bkash: $bkashNumber
+        fbPageName: $fbPageName
+        address: $address
       }
     ) {
       id

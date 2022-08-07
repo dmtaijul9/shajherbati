@@ -7,6 +7,9 @@ export const ME = gql`
         id
         email
         name
+        userType
+        bkash
+        paymentDue
       }
     }
   }

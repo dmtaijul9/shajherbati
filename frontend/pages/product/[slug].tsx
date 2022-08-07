@@ -24,21 +24,18 @@ export async function getServerSideProps(context: any) {
     data: {
       query: `
         query {
-          product (where: {slug: "${slug}"}) {
+          product (where: {id: "${slug}"}) {
+            id
             name
             category
-            slug
             price
             brand
-            rating
-            numReviews
             description
             countInStock
             productImg {
               image {
                 url
               }
-              name
             }
           }
         }
@@ -54,11 +51,13 @@ export async function getServerSideProps(context: any) {
 }
 
 const productScreen = ({ product }: any) => {
+  console.log(product);
+
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const addToCartHandler = () => {
     const existItem = state.cart.cartItems.find(
-      (item) => item.slug === product.slug
+      (item: any) => item.id === product.id
     );
     const quantity = existItem ? existItem.quantity + 1 : 1;
 
@@ -69,6 +68,7 @@ const productScreen = ({ product }: any) => {
     }
 
     dispatch({ type: "CART_ADD_ITEM", payload: { ...product, quantity } });
+    toast.success("Product Added to cart.");
     router.push("/cart");
   };
   if (!product) {
@@ -98,16 +98,16 @@ const productScreen = ({ product }: any) => {
             <li>Category: {product?.category}</li>
             <li>Brand: {product?.brand}</li>
             <li>
-              {product?.rating} of {product?.numReviews} reviews
+              Description:
+              <p>{product?.description}</p>
             </li>
-            <li>Description: {product?.description}</li>
           </ul>
         </div>
         <div>
           <div className="p-5 card">
             <div className="flex justify-between mb-2">
               <div>Price</div>
-              <div>${product?.price} </div>
+              <div>{product?.price} TK</div>
             </div>
             <div className="flex justify-between mb-2">
               <div>Status</div>

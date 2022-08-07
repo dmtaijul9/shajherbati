@@ -6,13 +6,18 @@ import Layout from "../components/Layout";
 import { Store } from "../utils/store";
 import { XCircleIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
+import useUser from "../lib/hooks/useUser";
+import { toast } from "react-toastify";
 
 const cart = () => {
+  const user = useUser();
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const {
     cart: { cartItems },
   } = state;
+
+  console.log(user);
 
   const removeCardItemHandler = (item) => {
     dispatch({ type: "REMOVE_CART_ITEM", payload: item });
@@ -23,8 +28,6 @@ const cart = () => {
       payload: { ...item, quantity: Number(qty) },
     });
   };
-  console.log(cartItems);
-
   return (
     <Layout title="Shopping Cart">
       <h1 className="mb-4 text-xl">Shopping Cart</h1>
@@ -49,7 +52,7 @@ const cart = () => {
                   <tr key={index} className="border-b">
                     <td>
                       {" "}
-                      <Link href={`/product/${item.slug}`}>
+                      <Link href={`/product/${item.id}`}>
                         <a className="flex items-center">
                           {" "}
                           <Image
@@ -103,7 +106,12 @@ const cart = () => {
                 </li>
                 <li>
                   <button
-                    onClick={() => router.push("shipping")}
+                    onClick={() => {
+                      if (!user) {
+                        toast.error("Login To Create Parcel");
+                      }
+                      router.push("/shipping");
+                    }}
                     className="w-full primary-button"
                   >
                     Create Percel

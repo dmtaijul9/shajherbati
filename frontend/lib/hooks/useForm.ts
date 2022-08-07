@@ -14,7 +14,10 @@ export const useForm = (initial: any = {}) => {
       value = parseFloat(value);
     }
     if (type === "file") {
-      [value] = e.target.files;
+      console.log(e);
+
+      value = e.target.files[0];
+      console.log(value);
     }
     setInputs({ ...inputs, [name]: value });
   };
