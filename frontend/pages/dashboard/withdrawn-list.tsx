@@ -4,7 +4,6 @@ import { SearchIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Layout from "../../components/Layout";
-import Modal from "../../components/Modal";
 import Pagination from "../../components/Pagination";
 import { getWithdrawHistory } from "../../lib/getDataFromApi";
 import { useForm } from "../../lib/hooks/useForm";
@@ -26,7 +25,6 @@ const withdrawn = () => {
   const { data, loading, error } = getWithdrawHistory(take, skip, search);
 
   const pageCount = Math.ceil(data?.withdrawsCount / take);
-  console.log(data);
 
   const handleSubmit = () => {
     setSearch(inputs.search);

@@ -29,7 +29,6 @@ const orderedParcelScreen = () => {
   const { data: PendingCount } = useQuery(PENDING_PARCEL_COUNT);
 
   const pageCount = Math.ceil(data?.parcelsCount / take);
-  console.log(data);
 
   const handleSubmit = () => {
     setSearch(inputs.search);

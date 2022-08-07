@@ -19,7 +19,6 @@ const withdrawHistory = () => {
   });
 
   const pageCount = Math.ceil(data?.withdrawsCount / take);
-  console.log(data);
 
   if (loading) {
     return (

@@ -37,7 +37,6 @@ const reset = () => {
       })
       .catch((error) => {
         toast.error("Error requesting password reset");
-        console.error(error);
       });
   };
   return (

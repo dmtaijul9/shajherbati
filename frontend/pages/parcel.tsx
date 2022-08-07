@@ -40,7 +40,6 @@ const parcel = () => {
     parseInt(shippingAddress?.sellPrice) +
     parseInt(shippingAddress?.deliveryCharge);
 
-  console.log(cartItems);
   const [createParcel, { data }] = useMutation(CREATE_PARCEL_MUTATION);
   const createParcelHandler = async () => {
     const parcelItemListArr = cartItems.map((item) => ({

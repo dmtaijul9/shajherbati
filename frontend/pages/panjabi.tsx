@@ -25,7 +25,6 @@ const panjabi = () => {
   );
 
   const pageCount = Math.ceil(data?.productsCount / take);
-  console.log(pageCount);
 
   const handleSubmit = () => {
     setSearch(inputs.search);
