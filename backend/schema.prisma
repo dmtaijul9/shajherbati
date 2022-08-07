@@ -13,18 +13,21 @@ generator client {
 }
 
 model User {
-  id         String     @id @default(cuid())
-  name       String     @default("")
-  email      String     @unique @default("")
-  password   String
-  products   Product[]  @relation("Product_user")
-  parcel     Parcel[]   @relation("Parcel_user")
-  userType   String?    @default("reseller")
-  bkash      String     @default("")
-  fbPageName String     @default("")
-  address    String     @default("")
-  paymentDue Float?     @default(0)
-  withdrawn  Withdraw[] @relation("Withdraw_user")
+  id                      String     @id @default(cuid())
+  name                    String     @default("")
+  email                   String     @unique @default("")
+  password                String
+  products                Product[]  @relation("Product_user")
+  parcel                  Parcel[]   @relation("Parcel_user")
+  userType                String?    @default("reseller")
+  bkash                   String     @default("")
+  fbPageName              String     @default("")
+  address                 String     @default("")
+  paymentDue              Float?     @default(0)
+  withdrawn               Withdraw[] @relation("Withdraw_user")
+  passwordResetToken      String?
+  passwordResetIssuedAt   DateTime?
+  passwordResetRedeemedAt DateTime?
 }
 
 model Product {

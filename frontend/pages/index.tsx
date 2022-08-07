@@ -7,36 +7,44 @@ import ProductItem from "../components/ProductItem";
 import ShowCase from "../components/ShowCase";
 
 import {
+  QUERY_PRODUCT_CAMPAIGN,
   QUERY_PRODUCT_PANJABI,
   QUERY_PRODUCT_TSHIRT,
   QUERY_PRODUCT_WOMENS_FASHION,
 } from "../resolvers/product/query";
 
 export default function Home({ products }: any) {
-  const {
-    data: womenFashion,
-    loading,
-    error,
-  } = useQuery(QUERY_PRODUCT_WOMENS_FASHION);
+  const { data: womenFashion } = useQuery(QUERY_PRODUCT_WOMENS_FASHION);
   const { data: panjabi } = useQuery(QUERY_PRODUCT_PANJABI);
   const { data: tShirt } = useQuery(QUERY_PRODUCT_TSHIRT);
+  const { data: campaign } = useQuery(QUERY_PRODUCT_CAMPAIGN);
 
   return (
     <section>
       <NavBar />
       <div className="pb-10">
-        <img
-          src="/img/hero.jpg"
-          alt="home baner "
-          className="w-full max-h-[600px]"
-        />
+        <a href="/signup">
+          <img
+            src="/img/hero.jpg"
+            alt="home baner "
+            className="w-full max-h-[600px]"
+          />
+        </a>
       </div>
 
+      {campaign?.products.length !== 0 && (
+        <ShowCase
+          products={campaign?.products}
+          category="Campaign"
+          color={false}
+          hrefLink="campaign"
+        />
+      )}
       {womenFashion?.products.length !== 0 && (
         <ShowCase
           products={womenFashion?.products}
           category="Womens Fashion"
-          color={false}
+          color={true}
           hrefLink="womens-fashion"
         />
       )}
@@ -44,7 +52,7 @@ export default function Home({ products }: any) {
         <ShowCase
           products={panjabi?.products}
           category="Panjabi"
-          color={true}
+          color={false}
           hrefLink="panjabi"
         />
       )}
@@ -52,7 +60,7 @@ export default function Home({ products }: any) {
         <ShowCase
           products={tShirt?.products}
           category="T-Shirt"
-          color={false}
+          color={true}
           hrefLink="t-shirt"
         />
       )}

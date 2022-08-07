@@ -124,6 +124,7 @@ const createProduct = () => {
                 value={inputs.category}
                 onChange={handleChange}
               >
+                <option value="">Select One</option>
                 <option value="campaign">Campaign</option>
                 <option value="unstitchedDress">Unstitched Dress</option>
                 <option value="Lehenga">lehenga</option>

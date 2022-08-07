@@ -87,3 +87,20 @@ export const QUERY_PRODUCT_TSHIRT = gql`
     }
   }
 `;
+
+export const QUERY_PRODUCT_CAMPAIGN = gql`
+  query {
+    products(where: { category: { equals: "campaign" } }, take: 4, skip: 0) {
+      id
+      name
+      category
+      productImg {
+        image {
+          url
+        }
+      }
+      brand
+      price
+    }
+  }
+`;
