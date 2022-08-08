@@ -131,27 +131,33 @@ const orderHistoryScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.parcels.map((item, index) => (
-                <tr
-                  key={index}
-                  className="border-b"
-                  onClick={() => {
-                    router.push(`/parcelview/${item.id}`);
-                  }}
-                >
-                  <td className="px-2 py-5 text-left">{item.name}</td>
-                  <td className="px-2 py-5 text-center">{item.phoneNumber}</td>
-                  <td className="px-2 py-5 text-center">
-                    {" "}
-                    {item.items
-                      .map((parcelItem) => parcelItem.quantity)
-                      .reduce((total, quantity) => (total += quantity))}{" "}
-                  </td>
-                  <td className="px-2 py-5 text-right">
-                    {item.sellPrice + item.deliveryCharge} TK
-                  </td>
-                </tr>
-              ))}
+              {data?.parcels.map((item, index) => {
+                console.log(item);
+
+                return (
+                  <tr
+                    key={index}
+                    className="border-b"
+                    onClick={() => {
+                      router.push(`/parcelview/${item.id}`);
+                    }}
+                  >
+                    <td className="px-2 py-5 text-left">{item.name}</td>
+                    <td className="px-2 py-5 text-center">
+                      {item.phoneNumber}
+                    </td>
+                    <td className="px-2 py-5 text-center">
+                      {" "}
+                      {item?.items
+                        ?.map((parcelItem) => parcelItem.quantity)
+                        ?.reduce((total, quantity) => (total += quantity))}{" "}
+                    </td>
+                    <td className="px-2 py-5 text-right">
+                      {item.sellPrice + item.deliveryCharge} TK
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
           <Pagination
