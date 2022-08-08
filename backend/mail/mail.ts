@@ -33,7 +33,6 @@ const resetPasswordTemplateCompiled = Handlebars.compile(resetPasswordSource);
 export async function sendResetPassword(resetToken: string, to: string) {
   try {
     const resetUrl = `${DASHBOARD_URL}/reset?token=${resetToken}&email=${to}`;
-    console.log(resetUrl);
 
     await transport.sendMail({
       to,

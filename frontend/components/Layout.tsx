@@ -5,7 +5,7 @@ const Layout = ({ children, title }: { children: any; title: string }) => {
   return (
     <>
       <Head>
-        <title>{title ? `${title} - shajerbati` : "shajerbati"}</title>
+        <title>{title ? `${title} - alekscreation` : "alekscreation"}</title>
         <meta name="description " content="Ecommerce website" />
         <link rel="icon" href="/fabicon.ico" />
       </Head>
@@ -15,7 +15,7 @@ const Layout = ({ children, title }: { children: any; title: string }) => {
         </header>
         <main className="container px-4 m-auto mt-4"> {children} </main>
         <footer className="flex items-center justify-center h-10 bg-white border-t-2 shadow-inner">
-          <p>Copyright &copy; 2022 Aleks creation</p>
+          <p>Copyright &copy; 2022 Alekscreation</p>
         </footer>
       </div>
     </>

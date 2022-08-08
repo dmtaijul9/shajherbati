@@ -37,32 +37,38 @@ const shipping = () => {
     const { fullName, address, phoneNumber, sellPrice, deliveryCharge } =
       inputs;
 
-    if (deliveryCharge !== ("70" || "150")) {
-      toast.error("Please Input All field");
+    console.log(deliveryCharge);
+
+    if (deliveryCharge === "70" || deliveryCharge === "150") {
+      const variables = {
+        fullName: fullName,
+        address: address,
+        phoneNumber: phoneNumber,
+        sellPrice: sellPrice,
+        deliveryCharge: parseInt(deliveryCharge),
+      };
+
+      console.log(variables);
+
+      dispatch({
+        type: "SAVE_SHIPPING_ADDRESS",
+        payload: variables,
+      });
+      Cookies.set(
+        "cart",
+        JSON.stringify({
+          ...cart,
+          shippingAddress: {
+            ...inputs,
+          },
+        })
+      );
+
+      router.push("/payment");
       return;
     }
-    const variables = {
-      fullName: fullName,
-      address: address,
-      phoneNumber: phoneNumber,
-      sellPrice: sellPrice,
-      deliveryCharge: parseInt(deliveryCharge),
-    };
-    dispatch({
-      type: "SAVE_SHIPPING_ADDRESS",
-      payload: variables,
-    });
-    Cookies.set(
-      "cart",
-      JSON.stringify({
-        ...cart,
-        shippingAddress: {
-          ...inputs,
-        },
-      })
-    );
 
-    router.push("/payment");
+    toast.error("Please Input All field");
   };
   return (
     <Layout title="Shipping Address">
